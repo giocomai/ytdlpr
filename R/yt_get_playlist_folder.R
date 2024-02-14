@@ -8,20 +8,34 @@
 #' @export
 #'
 #' @examples
-#' yt_get_playlist_folder()
+#' \dontrun{
+#' yt_get_playlist_folder(
+#'   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+#' )
+#' }
+#'
 yt_get_playlist_folder <- function(playlist,
                                    yt_base_folder = NULL) {
   yt_base_folder <- yt_get_base_folder(path = yt_base_folder)
 
-  playlist <- stringr::str_remove(
-    string = playlist,
-    pattern = stringr::fixed("https://www.youtube.com/playlist?list=")
-  )
+  if (stringr::str_detect(string = playlist, pattern = "list=")) {
+    playlist_id <- stringr::str_extract(
+      string = playlist,
+      pattern = "(?<=list\\=)[[:print:]]+$"
+    )
+  } else {
+    playlist_id <- playlist
+  }
 
   playlist_folder <- fs::path(
     yt_base_folder,
-    fs::path_sanitize(playlist)
+    fs::path_sanitize(playlist_id)
   )
 
-  fs::dir_create(playlist_folder)
+  if (fs::file_exists(playlist_folder)==FALSE) {
+    fs::dir_create(playlist_folder)
+    cli::cli_inform("Playlist folder created: {.path {playlist_folder}}")
+  }
+
+  playlist_folder
 }

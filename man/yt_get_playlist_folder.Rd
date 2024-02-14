@@ -19,5 +19,10 @@ Path to playlist folder.
 Get local path to folder where files for the given playlist will be stored
 }
 \examples{
-yt_get_playlist_folder()
+\dontrun{
+yt_get_playlist_folder(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+)
+}
+
 }

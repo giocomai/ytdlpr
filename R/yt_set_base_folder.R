@@ -15,13 +15,9 @@
 #'   "ytdlpr"
 #' ))
 #' yt_get_base_folder()
-yt_set_base_folder <- function(path = NULL) {
-  if (is.null(path)) {
-    yt_base_folder <- Sys.getenv("yt_base_folder", unset = ".")
-  } else {
-    Sys.setenv(yt_base_folder = path)
-  }
-  invisible(yt_base_folder)
+yt_set_base_folder <- function(path) {
+  Sys.setenv(yt_base_folder = path)
+  invisible(path)
 }
 
 #' Retrieves base folder where all retrieved files will be stored for the
@@ -46,6 +42,10 @@ yt_get_base_folder <- function(path = NULL) {
     yt_base_folder <- Sys.getenv("yt_base_folder", unset = ".")
   } else {
     yt_base_folder <- path
+  }
+  if (fs::file_exists(yt_base_folder)==FALSE) {
+    fs::dir_create(yt_base_folder)
+    cli::cli_inform("Base folder created: {.path {yt_base_folder}}")
   }
   invisible(yt_base_folder)
 }

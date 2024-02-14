@@ -2,4 +2,6 @@
 
 export(yt_get_base_folder)
 export(yt_get_playlist_folder)
+export(yt_get_playlist_id)
+export(yt_get_subtitles_playlist)
 export(yt_set_base_folder)

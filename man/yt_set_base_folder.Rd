@@ -5,7 +5,7 @@
 \title{Set for the current session base folder where all retrieved files will be
 stored}
 \usage{
-yt_set_base_folder(path = NULL)
+yt_set_base_folder(path)
 }
 \arguments{
 \item{path}{Defaults to NULL. If not set, checks if a path has been
