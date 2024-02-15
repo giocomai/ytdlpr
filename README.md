@@ -9,8 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-ytdlpr wraps some functionalities of `yt-dlp` to facilitate their use in
-R-based workflows. It is currently focused on retrieving and parsing
+`ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use
+in R-based workflows. It is currently focused on retrieving and parsing
 subtitles.
 
 ## Installation
@@ -126,7 +126,7 @@ Or, yf you want to parse only subtitles that are locally available, you
 can achieve the same with `yt_get_local_subtitles()`:
 
 ``` r
-subs_df <- yt_get_local_subtitles(
+subtitles_df <- yt_get_local_subtitles(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 ) |>
   yt_read_vtt()
@@ -138,24 +138,38 @@ European Space Agency. Let’s see all the times when they mention the
 word “rover”:
 
 ``` r
-subs_df |>
-  dplyr::select(-language, -line_id) |>
-  dplyr::filter(stringr::str_detect(
-    string = text,
-    pattern = stringr::regex("rover", ignore_case = TRUE)
-  ))
-#> # A tibble: 11 × 3
-#>    yt_id       text                                     start_time  
-#>    <chr>       <chr>                                    <chr>       
-#>  1 YSfwPzWM-8o lunar Rovers as you see in the bottom    00:00:46.549
-#>  2 YSfwPzWM-8o aggressive Rover we may be in trouble    00:20:25.850
-#>  3 M2awfGQIEoU Rover on the surface of Mars and being   00:03:24.050
-#>  4 M2awfGQIEoU Roslyn Franklin Rover that I mentioned   00:10:15.230
-#>  5 M2awfGQIEoU before the first Rover that can actually 00:10:16.910
-#>  6 M2awfGQIEoU the Rover itself but on top of that for  00:10:24.889
-#>  7 M2awfGQIEoU Roslyn Franklin Rover which is           00:11:32.210
-#>  8 M2awfGQIEoU here's the Rover and there's exomar's    00:11:44.990
-#>  9 M2awfGQIEoU perseverance Rover that's already been   00:11:55.730
-#> 10 NpF75U10ewM into a strange place during microverity  00:04:17.569
-#> 11 qlbBCymbdOM spacewalk which is a lect Rover that can 00:49:16.370
+rover_df <- yt_filter(
+  pattern = "rover",
+  subtitles_df = subtitles_df
+)
+rover_df
+#> # A tibble: 11 × 6
+#>    yt_id       language line_id text                            start_time link 
+#>    <chr>       <chr>      <int> <chr>                           <chr>      <chr>
+#>  1 YSfwPzWM-8o en            14 lunar Rovers as you see in the… 00:00:46.… http…
+#>  2 YSfwPzWM-8o en           495 aggressive Rover we may be in … 00:20:25.… http…
+#>  3 M2awfGQIEoU en            82 Rover on the surface of Mars a… 00:03:24.… http…
+#>  4 M2awfGQIEoU en           255 Roslyn Franklin Rover that I m… 00:10:15.… http…
+#>  5 M2awfGQIEoU en           256 before the first Rover that ca… 00:10:16.… http…
+#>  6 M2awfGQIEoU en           259 the Rover itself but on top of… 00:10:24.… http…
+#>  7 M2awfGQIEoU en           287 Roslyn Franklin Rover which is  00:11:32.… http…
+#>  8 M2awfGQIEoU en           292 here's the Rover and there's e… 00:11:44.… http…
+#>  9 M2awfGQIEoU en           297 perseverance Rover that's alre… 00:11:55.… http…
+#> 10 NpF75U10ewM en            97 into a strange place during mi… 00:04:17.… http…
+#> 11 qlbBCymbdOM en          1074 spacewalk which is a lect Rove… 00:49:16.… http…
 ```
+
+The resulting data frame includes a direct link to the relevant video
+clip at the exact timing:
+
+- <https://youtu.be/YSfwPzWM-8o?t=44>
+- <https://youtu.be/YSfwPzWM-8o?t=1223>
+- <https://youtu.be/M2awfGQIEoU?t=201>
+- <https://youtu.be/M2awfGQIEoU?t=612>
+- <https://youtu.be/M2awfGQIEoU?t=614>
+- <https://youtu.be/M2awfGQIEoU?t=622>
+- <https://youtu.be/M2awfGQIEoU?t=689>
+- <https://youtu.be/M2awfGQIEoU?t=702>
+- <https://youtu.be/M2awfGQIEoU?t=713>
+- <https://youtu.be/NpF75U10ewM?t=255>
+- <https://youtu.be/qlbBCymbdOM?t=2953>

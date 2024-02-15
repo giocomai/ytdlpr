@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-ytdlpr wraps some functionalities of `yt-dlp` to facilitate their use in R-based workflows. It is currently focused on retrieving and parsing subtitles.
+`ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use in R-based workflows. It is currently focused on retrieving and parsing subtitles.
 
 ## Installation
 
@@ -86,7 +86,7 @@ yt_get_subtitles_playlist(
 Or, yf you want to parse only subtitles that are locally available, you can achieve the same with `yt_get_local_subtitles()`: 
 
 ```{r yt_get_local_subtitles and yt_read_vtt}
-subs_df <- yt_get_local_subtitles(
+subtitles_df <- yt_get_local_subtitles(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 ) |>
   yt_read_vtt()
@@ -94,14 +94,20 @@ subs_df <- yt_get_local_subtitles(
 
 So... these are lengthy video clips with hours of recordings by the European Space Agency. Let's see all the times when they mention the word "rover":
 
-```{r}
-subs_df |>
-  dplyr::select(-language, -line_id) |>
-  dplyr::filter(stringr::str_detect(
-    string = text,
-    pattern = stringr::regex("rover", ignore_case = TRUE)
-  ))
+```{r yt_filter}
+rover_df <- yt_filter(
+  pattern = "rover",
+  subtitles_df = subtitles_df
+)
+rover_df
 ```
 
+The resulting data frame includes a direct link to the relevant video clip at the exact timing:
+
+```{r rover_link_list, results='asis', echo=FALSE}
+for (i in rover_df[["link"]]) {
+  cat(paste0("- ", i, "\n"))
+}
+```
 
 

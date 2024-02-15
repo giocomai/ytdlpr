@@ -2,6 +2,8 @@
 #' frame
 #'
 #' @param sub_format Defaults to "vtt". File extension of the subtitle.
+#' @param language Defaults to NULL. If not given, all local subtitles are
+#'   returned. If given, only subtitles in the given language are returned.
 #' @inheritParams yt_get_playlist_folder
 #'
 #' @return A data frame (a tibble) with details on locally available subtitle
@@ -13,6 +15,7 @@
 #' yt_get_local_subtitles()
 #' }
 yt_get_local_subtitles <- function(playlist = NULL,
+                                   language = NULL,
                                    sub_format = "vtt",
                                    yt_base_folder = NULL) {
   if (is.null(playlist) == FALSE) {
@@ -31,7 +34,7 @@ yt_get_local_subtitles <- function(playlist = NULL,
     glob = stringr::str_c("*.", sub_format)
   )
 
-  tibble::tibble(path = all_subs_v) |>
+  subtitles_df <- tibble::tibble(path = all_subs_v) |>
     dplyr::mutate(metadata = stringr::str_extract(
       string = path,
       pattern = "\\[[[:print:]]+$"
@@ -60,4 +63,11 @@ yt_get_local_subtitles <- function(playlist = NULL,
       playlist,
       path
     )
+
+  if (is.null(language) == FALSE) {
+    subtitles_df |>
+      dplyr::filter(language %in% language)
+  } else {
+    subtitles_df
+  }
 }
