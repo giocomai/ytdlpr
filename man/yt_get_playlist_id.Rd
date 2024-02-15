@@ -9,7 +9,9 @@ yt_get_playlist_id(playlist, update = FALSE, yt_base_folder = NULL)
 \arguments{
 \item{playlist}{The full url of a Youtube playlist.}
 
-\item{update}{Defaults to FALSE. If FALSE, data is returned immediately if previously stored. If TRUE, it checks again the playlist on Youtube to see if new content has been added.}
+\item{update}{Defaults to FALSE. If FALSE, data is returned immediately if
+previously stored. If TRUE, it checks again the playlist on Youtube to see
+if new content has been added.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}
@@ -23,6 +25,7 @@ Get all Youtube identifiers for a given playlist
 \examples{
 \dontrun{
 yt_get_playlist_id(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj")
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+)
 }
 }

@@ -60,7 +60,6 @@ A first step, that if not explicitly done will be performed implicitly by other 
 yt_get_playlist_id(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
 )
-
 ```
 Notice that the data are stored locally: unless the `update` argument in `yt_get_playlist_id()` is set to TRUE, following calls to this function will just retrieve locally stored identifiers.
 

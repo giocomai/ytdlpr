@@ -8,27 +8,38 @@ yt_get_subtitles_playlist(
   playlist,
   sub_lang = "en",
   write_auto_sub = TRUE,
-  write_info_json = TRUE,
+  write_info_json = FALSE,
   min_sleep_interval = 1,
   max_sleep_interval = 8,
   sleep_subtitles = 2,
+  custom_options = "",
   yt_base_folder = NULL
 )
 }
 \arguments{
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
-\item{sub_lang}{Defaults to "en". If more than one, can be given as comma separated two letter codes, or a as vector.}
+\item{sub_lang}{Defaults to "en". If more than one, can be given as comma
+separated two letter codes, or a as vector.}
 
 \item{write_auto_sub}{"Write automatically generated subtitle file"}
 
-\item{write_info_json}{"Write video metadata to a .info.json file (this may contain personal information)"}
+\item{write_info_json}{"Write video metadata to a .info.json file (this may
+contain personal information)"}
 
-\item{min_sleep_interval}{"Number of seconds to sleep before each download. This is the minimum time to sleep when used along with --max-sleep-interval"}
+\item{min_sleep_interval}{"Number of seconds to sleep before each download.
+This is the minimum time to sleep when used along with
+--max-sleep-interval"}
 
-\item{max_sleep_interval}{"Maximum number of seconds to sleep. Can only be used along with --min-sleep-interval"}
+\item{max_sleep_interval}{"Maximum number of seconds to sleep. Can only be
+used along with --min-sleep-interval"}
 
-\item{sleep_subtitles}{"Number of seconds to sleep before each subtitle download"}
+\item{sleep_subtitles}{"Number of seconds to sleep before each subtitle
+download"}
+
+\item{custom_options}{Defaults to an empty string. If given, it should
+correspond to parameters exactly as they would be used on command line. For
+a full list, see the \href{https://github.com/yt-dlp/yt-dlp}{original documentation}.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}

@@ -32,7 +32,7 @@ yt_get_playlist_folder <- function(playlist,
     fs::path_sanitize(playlist_id)
   )
 
-  if (fs::file_exists(playlist_folder)==FALSE) {
+  if (fs::file_exists(playlist_folder) == FALSE) {
     fs::dir_create(playlist_folder)
     cli::cli_inform("Playlist folder created: {.path {playlist_folder}}")
   }

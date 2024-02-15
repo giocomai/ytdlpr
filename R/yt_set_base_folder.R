@@ -43,7 +43,7 @@ yt_get_base_folder <- function(path = NULL) {
   } else {
     yt_base_folder <- path
   }
-  if (fs::file_exists(yt_base_folder)==FALSE) {
+  if (fs::file_exists(yt_base_folder) == FALSE) {
     fs::dir_create(yt_base_folder)
     cli::cli_inform("Base folder created: {.path {yt_base_folder}}")
   }
