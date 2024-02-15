@@ -88,8 +88,9 @@ downloading English language subtitles, but you can customise this using
 the dedicated function.
 
 ``` r
-yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  subtitles = TRUE
 )
 ```
 
@@ -101,11 +102,11 @@ easy to parse in R. You can download and import them in a single go
 with:
 
 ``` r
-yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  subtitles = TRUE
 ) |>
   yt_read_vtt()
-#> ■■■■■■■■■■■■■■■■■■■■■■■■■■■ 86% | ETA: 0s
 #> # A tibble: 8,547 × 5
 #>    yt_id       language line_id text                                  start_time
 #>    <chr>       <chr>      <int> <chr>                                 <chr>     
@@ -160,16 +161,50 @@ rover_df
 ```
 
 The resulting data frame includes a direct link to the relevant video
-clip at the exact timing:
+clip at the exact timing. Here just a few examples, with just one
+mention to `rover` per clip.
 
-- <https://youtu.be/YSfwPzWM-8o?t=44>
-- <https://youtu.be/YSfwPzWM-8o?t=1223>
-- <https://youtu.be/M2awfGQIEoU?t=201>
 - <https://youtu.be/M2awfGQIEoU?t=612>
-- <https://youtu.be/M2awfGQIEoU?t=614>
-- <https://youtu.be/M2awfGQIEoU?t=622>
-- <https://youtu.be/M2awfGQIEoU?t=689>
-- <https://youtu.be/M2awfGQIEoU?t=702>
-- <https://youtu.be/M2awfGQIEoU?t=713>
 - <https://youtu.be/NpF75U10ewM?t=255>
+- <https://youtu.be/YSfwPzWM-8o?t=44>
 - <https://youtu.be/qlbBCymbdOM?t=2953>
+
+Let’s try again, with an example that may be more relevant for R users:
+all references to “community” in the video of Posit Conf 2023
+
+``` r
+positconf2023_df <- yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PL9HYL-VRX0oRFZslRGHwHuwea7SvAATHp",
+  subtitles = TRUE
+) |>
+  yt_read_vtt()
+
+community_df <- yt_filter(
+  pattern = "community",
+  subtitles_df = positconf2023_df
+)
+community_df
+#> # A tibble: 191 × 6
+#>    yt_id       language line_id text                            start_time link 
+#>    <chr>       <chr>      <int> <chr>                           <chr>      <chr>
+#>  1 -0pPBAiJaYk en           306 team it's created a community … 00:11:15.… http…
+#>  2 18vfcf46ozE en           322 American Community survey dire… 00:12:39.… http…
+#>  3 18vfcf46ozE en           396 is on community                 00:15:22.… http…
+#>  4 18vfcf46ozE en           407 community so as our users we a… 00:15:44.… http…
+#>  5 18vfcf46ozE en           411 community and so me now as a t… 00:15:53.… http…
+#>  6 18vfcf46ozE en           414 appreciation for that communit… 00:16:00.… http…
+#>  7 DVQJ39_9L0U en           123 community and any problems tha… 00:05:26.… http…
+#>  8 DVQJ39_9L0U en           160 Community with individuals sha… 00:07:07.… http…
+#>  9 DVQJ39_9L0U en           317 and Community Building they su… 00:14:19.… http…
+#> 10 DVQJ39_9L0U en           327 community the second organizat… 00:14:46.… http…
+#> # ℹ 181 more rows
+```
+
+Here just a random sample of examples:
+
+- <https://youtu.be/zjPdBDyIyJ8?t=512>
+- <https://youtu.be/pK0IHGxUm9E?t=100>
+- <https://youtu.be/awTzbYXTlSc?t=141>
+- <https://youtu.be/iQY24bWRDww?t=217>
+- <https://youtu.be/dwijIhn0Cbk?t=739>
+- <https://youtu.be/EihuM4oyOvs?t=1035>

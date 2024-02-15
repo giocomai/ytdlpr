@@ -30,7 +30,8 @@ yt_get_local_subtitles <- function(playlist = NULL,
   all_subs_v <- fs::dir_ls(
     path = subtitles_folder,
     all = FALSE,
-    recurse = TRUE, type = "file",
+    recurse = TRUE,
+    type = "file",
     glob = stringr::str_c("*.", sub_format)
   )
 

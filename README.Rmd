@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+set.seed(7)
 ```
 
 # ytdlpr
@@ -67,8 +68,9 @@ Notice that the data are stored locally: unless the `update` argument in `yt_get
 If all we really care about is subtitles, we can skip this step and move on to downloading subtitles. By default, this will proceed with downloading English language subtitles, but you can customise this using the dedicated function.
 
 ```{r yt_get_subtitles_playlist, eval = FALSE}
-yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  subtitles = TRUE
 )
 ```
 
@@ -76,9 +78,10 @@ This will download all relevant subtitles and return a data frame with some basi
 
 The next step is to actually import these subtitles in a format that is easy to parse in R. You can download and import them in a single go with:
 
-```{r yt_get_subtitles_playlist and yt_read_vtt}
-yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+```{r yt_get_subtitles_playlist and yt_read_vtt, message = FALSE}
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  subtitles = TRUE
 ) |>
   yt_read_vtt()
 ```
@@ -102,12 +105,46 @@ rover_df <- yt_filter(
 rover_df
 ```
 
-The resulting data frame includes a direct link to the relevant video clip at the exact timing:
+The resulting data frame includes a direct link to the relevant video clip at the exact timing. Here just a few examples, with just one mention to `rover` per clip.
 
 ```{r rover_link_list, results='asis', echo=FALSE}
-for (i in rover_df[["link"]]) {
+selected_rover_df <- rover_df |>
+  dplyr::group_by(yt_id) |>
+  dplyr::slice_sample(n = 1) |>
+  dplyr::ungroup()
+
+for (i in selected_rover_df[["link"]]) {
   cat(paste0("- ", i, "\n"))
 }
 ```
 
+Let's try again, with an example that may be more relevant for R users: all references to "community" in the video of Posit Conf 2023
+
+```{r positconf2023, message = FALSE}
+positconf2023_df <- yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PL9HYL-VRX0oRFZslRGHwHuwea7SvAATHp",
+  subtitles = TRUE
+) |>
+  yt_read_vtt()
+
+community_df <- yt_filter(
+  pattern = "community",
+  subtitles_df = positconf2023_df
+)
+community_df
+```
+
+Here just a random sample of examples:
+
+```{r community_link_list, results='asis', echo=FALSE}
+selected_community_df <- community_df |>
+  dplyr::group_by(yt_id) |>
+  dplyr::slice_sample(n = 1) |>
+  dplyr::ungroup() |>
+  dplyr::slice_sample(n = 6)
+
+for (i in selected_community_df[["link"]]) {
+  cat(paste0("- ", i, "\n"))
+}
+```
 
