@@ -58,7 +58,7 @@ A first step, that if not explicitly done will be performed implicitly by other 
 
 ```{r yt_get_playlist_id}
 yt_get_playlist_id(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 )
 ```
 Notice that the data are stored locally: unless the `update` argument in `yt_get_playlist_id()` is set to TRUE, following calls to this function will just retrieve locally stored identifiers.
@@ -67,9 +67,14 @@ If all we really care about is subtitles, we can skip this step and move on to d
 
 ```{r yt_get_subtitles_playlist, eval = FALSE}
 yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 )
 ```
 
+This will download all relevant subtitles and return a data frame with some basic metadata about them.
+
+```{r}
+
+```
 
 

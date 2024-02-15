@@ -7,6 +7,7 @@
 yt_get_subtitles_playlist(
   playlist,
   sub_lang = "en",
+  sub_format = "vtt",
   write_auto_sub = TRUE,
   write_info_json = FALSE,
   min_sleep_interval = 1,
@@ -21,6 +22,8 @@ yt_get_subtitles_playlist(
 
 \item{sub_lang}{Defaults to "en". If more than one, can be given as comma
 separated two letter codes, or a as vector.}
+
+\item{sub_format}{Defaults to "vtt". Other formats not yet supported.}
 
 \item{write_auto_sub}{"Write automatically generated subtitle file"}
 

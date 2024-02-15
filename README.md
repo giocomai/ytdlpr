@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # ytdlpr
@@ -61,15 +62,18 @@ the given playlist.
 
 ``` r
 yt_get_playlist_id(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 )
-#> # A tibble: 4 × 1
+#> # A tibble: 7 × 1
 #>   yt_id      
 #>   <chr>      
-#> 1 xn0SqlCr_jY
-#> 2 YPNVVDphQVc
-#> 3 STnutT6CXlo
-#> 4 fDoQLsHlMRY
+#> 1 qlbBCymbdOM
+#> 2 NpF75U10ewM
+#> 3 FpFZJNM8cig
+#> 4 YSfwPzWM-8o
+#> 5 M2awfGQIEoU
+#> 6 bF-ZLHetgJs
+#> 7 kuAjDl0ACCA
 ```
 
 Notice that the data are stored locally: unless the `update` argument in
@@ -83,6 +87,9 @@ the dedicated function.
 
 ``` r
 yt_get_subtitles_playlist(
-  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 )
 ```
+
+This will download all relevant subtitles and return a data frame with
+some basic metadata about them.
