@@ -51,6 +51,7 @@ What happens next depends a bit on your starting point, i.e., if you have a set 
 
 ### Retrieve subtitles starting from single video urls/id
 
+[to do]
 
 ### Retrieve subtitles starting from a playlist
 
@@ -89,6 +90,17 @@ subs_df <- yt_get_local_subtitles(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 ) |>
   yt_read_vtt()
+```
+
+So... these are lengthy video clips with hours of recordings by the European Space Agency. Let's see all the times when they mention the word "rover":
+
+```{r}
+subs_df |>
+  dplyr::select(-language, -line_id) |>
+  dplyr::filter(stringr::str_detect(
+    string = text,
+    pattern = stringr::regex("rover", ignore_case = TRUE)
+  ))
 ```
 
 

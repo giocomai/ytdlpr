@@ -82,7 +82,7 @@ yt_read_vtt <- function(path) {
           start_time = stringr::str_extract(
             string = timestamp[is.na(timestamp) == FALSE],
             pattern = "[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}"
-          )
+          ),
         ) |>
         dplyr::mutate(line_id = dplyr::row_number()) |>
         dplyr::mutate(
