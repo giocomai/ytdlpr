@@ -25,6 +25,9 @@ yt_filter(
 
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
+\item{subtitles_df}{Defaults to NULL. If given must be a data frame,
+typically generated with \code{yt_get_local_subtitles()}.}
+
 \item{language}{Defaults to NULL. If not given, all local subtitles are
 returned. If given, only subtitles in the given language are returned.}
 

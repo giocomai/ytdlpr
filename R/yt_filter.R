@@ -3,6 +3,8 @@
 #' @param pattern A character string.
 #' @param ignore_case Defaults to TRUE.
 #' @param regex Defaults to TRUE.
+#' @param subtitles_df Defaults to NULL. If given must be a data frame,
+#'   typically generated with `yt_get_local_subtitles()`.
 #' @param lag Defaults to `-3`. Refers to the number of seconds before or after
 #'   the start time as recorded in the subtitles. Minus three seems to generally
 #'   be a good default.
