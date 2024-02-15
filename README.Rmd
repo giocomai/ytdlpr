@@ -73,8 +73,23 @@ yt_get_subtitles_playlist(
 
 This will download all relevant subtitles and return a data frame with some basic metadata about them.
 
-```{r}
+The next step is to actually import these subtitles in a format that is easy to parse in R. You can download and import them in a single go with:
 
+```{r yt_get_subtitles_playlist and yt_read_vtt}
+yt_get_subtitles_playlist(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+) |>
+  yt_read_vtt()
 ```
+
+Or, yf you want to parse only subtitles that are locally available, you can achieve the same with `yt_get_local_subtitles()`: 
+
+```{r yt_get_local_subtitles and yt_read_vtt}
+subs_df <- yt_get_local_subtitles(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+) |>
+  yt_read_vtt()
+```
+
 
 

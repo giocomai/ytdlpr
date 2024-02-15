@@ -93,3 +93,40 @@ yt_get_subtitles_playlist(
 
 This will download all relevant subtitles and return a data frame with
 some basic metadata about them.
+
+The next step is to actually import these subtitles in a format that is
+easy to parse in R. You can download and import them in a single go
+with:
+
+``` r
+yt_get_subtitles_playlist(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+) |>
+  yt_read_vtt()
+#> ■■■■■■■■■■■■■■■■■■■■■■■■■■■ 86% | ETA: 0s
+#> # A tibble: 8,547 × 5
+#>    yt_id       language line_id text                                  start_time
+#>    <chr>       <chr>      <int> <chr>                                 <chr>     
+#>  1 YSfwPzWM-8o en             1 "foreign"                             00:00:01.…
+#>  2 YSfwPzWM-8o en             2 ""                                    00:00:10.…
+#>  3 YSfwPzWM-8o en             3 "systems engineering principles my n… 00:00:13.…
+#>  4 YSfwPzWM-8o en             4 "is Robin bisbrook I work at Aztec i… 00:00:17.…
+#>  5 YSfwPzWM-8o en             5 "concurrent design facility I starte… 00:00:19.…
+#>  6 YSfwPzWM-8o en             6 "career in in France Guyana in 1997 … 00:00:24.…
+#>  7 YSfwPzWM-8o en             7 "I've worked at several places at uh… 00:00:27.…
+#>  8 YSfwPzWM-8o en             8 "the European Space Agency centers i… 00:00:29.…
+#>  9 YSfwPzWM-8o en             9 "Germany and the Netherlands ever si… 00:00:31.…
+#> 10 YSfwPzWM-8o en            10 "and I've had my own company as well… 00:00:35.…
+#> # ℹ 8,537 more rows
+```
+
+Or, yf you want to parse only subtitles that are locally available, you
+can achieve the same with `yt_get_local_subtitles()`:
+
+``` r
+subs_df <- yt_get_local_subtitles(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+) |>
+  yt_read_vtt()
+#> ■■■■■■■■■■■■■■■■■■■■■■■■■■■ 86% | ETA: 0s
+```

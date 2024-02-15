@@ -53,12 +53,14 @@ yt_get_subtitles_playlist <- function(playlist,
 
   playlist_df <- yt_get_playlist_id(playlist = playlist)
 
-  local_subtitles_df <- yt_check_local_subtitles(
+  local_subtitles_df <- yt_get_local_subtitles(
     sub_format = sub_format,
     yt_base_folder = yt_base_folder
   ) |>
-    dplyr::filter(language %in% sub_lang,
-                  yt_id %in% playlist_df[["yt_id"]])
+    dplyr::filter(
+      language %in% sub_lang,
+      yt_id %in% playlist_df[["yt_id"]]
+    )
 
   playlist_to_download_df <- playlist_df |>
     dplyr::anti_join(
@@ -107,7 +109,7 @@ yt_get_subtitles_playlist <- function(playlist,
 
   system(command = yt_command)
 
-  yt_check_local_subtitles(
+  yt_get_local_subtitles(
     sub_format = sub_format,
     yt_base_folder = yt_base_folder
   ) |>

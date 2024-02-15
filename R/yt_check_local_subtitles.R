@@ -10,14 +10,22 @@
 #'
 #' @examples
 #' \dontrun{
-#' yt_check_local_subtitles()
+#' yt_get_local_subtitles()
 #' }
-yt_check_local_subtitles <- function(sub_format = "vtt",
-                                     yt_base_folder = NULL) {
-  base_folder <- yt_get_base_folder(path = yt_base_folder)
+yt_get_local_subtitles <- function(playlist = NULL,
+                                   sub_format = "vtt",
+                                   yt_base_folder = NULL) {
+  if (is.null(playlist) == FALSE) {
+    subtitles_folder <- yt_get_playlist_folder(
+      playlist = playlist,
+      yt_base_folder = yt_base_folder
+    )
+  } else {
+    subtitles_folder <- yt_get_base_folder(path = yt_base_folder)
+  }
 
   all_subs_v <- fs::dir_ls(
-    path = base_folder,
+    path = subtitles_folder,
     all = FALSE,
     recurse = TRUE, type = "file",
     glob = stringr::str_c("*.", sub_format)
@@ -40,7 +48,7 @@ yt_check_local_subtitles <- function(sub_format = "vtt",
         stringr::str_extract(pattern = "(?<=\\[)[[:print:]]{11}"),
       playlist = path |>
         fs::path_dir() |>
-        stringr::str_remove(base_folder) |>
+        stringr::str_remove(subtitles_folder) |>
         stringr::str_remove(pattern = stringr::fixed("/")),
       sub_format = sub_format
     ) |>
