@@ -30,6 +30,7 @@
 #' )
 #' }
 #'
+#' @importFrom rlang .data
 yt_filter <- function(pattern,
                       ignore_case = TRUE,
                       regex = TRUE,
@@ -57,14 +58,14 @@ yt_filter <- function(pattern,
 
   subtitles_df |>
     dplyr::filter(stringr::str_detect(
-      string = text,
+      string = .data[["text"]],
       pattern = filter_pattern
     )) |>
-    dplyr::group_by(yt_id, line_id) |>
+    dplyr::group_by(.data[["yt_id"]], .data[["line_id"]]) |>
     dplyr::mutate(
       start_time_sec =
         sum(
-          lubridate::hms(start_time) |>
+          lubridate::hms(.data[["start_time"]]) |>
             lubridate::period_to_seconds() |>
             round(digits = 0),
           lag
@@ -72,10 +73,10 @@ yt_filter <- function(pattern,
     ) |>
     dplyr::mutate(link = stringr::str_c(
       "https://youtu.be/",
-      yt_id,
+      .data[["yt_id"]],
       "?t=",
-      start_time_sec
+      .data[["start_time_sec"]]
     )) |>
-    dplyr::select(-start_time_sec) |>
+    dplyr::select(-.data[["start_time_sec"]]) |>
     dplyr::ungroup()
 }
