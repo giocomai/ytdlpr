@@ -1,5 +1,7 @@
 #' Lists locally available files that can be attributed to a video id
 #'
+#' @param file_extension Defaults to NULL. Only file names with the given
+#'   extension are returned.
 #' @inheritParams yt_get_playlist_folder
 #' @inheritParams yt_extract_id
 #'
@@ -9,9 +11,15 @@
 #' @examples
 #' \dontrun{
 #' yt_get_local_id()
+#'
+#' yt_get_local_id(
+#'   yt_id = "WXPBOfRtXQE",
+#'   file_extension = "webm"
+#' )
 #' }
 yt_get_local_id <- function(yt_id = NULL,
                             playlist = NULL,
+                            file_extension = NULL,
                             yt_base_folder = NULL) {
   if (is.null(playlist) == FALSE) {
     folder_path <- yt_get_playlist_folder(
@@ -28,6 +36,10 @@ yt_get_local_id <- function(yt_id = NULL,
     recurse = TRUE,
     type = "file"
   )
+
+  if (is.null(file_extension) == FALSE) {
+    all_files_v <- all_files_v[stringr::str_ends(string = all_files_v, pattern = file_extension)]
+  }
 
   yt_id_df <- tibble::tibble(path = all_files_v) |>
     dplyr::mutate(yt_id = stringr::str_extract(
