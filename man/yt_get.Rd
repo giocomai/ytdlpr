@@ -35,6 +35,8 @@ locally available. If subtitles is set to FALSE, the presence of \emph{any}
 local file associated with a given id prevents further downloads associated
 with it.}
 
+\item{subtitles}{Defaults to FALSE. "Write subtitle file"}
+
 \item{sub_lang}{Defaults to "en". If more than one, can be given as comma
 separated two letter codes, or a as vector.}
 
@@ -68,8 +70,6 @@ a full list, see the \href{https://github.com/yt-dlp/yt-dlp}{original documentat
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}
-
-\item{subtitle}{Defaults to FALSE. "Write subtitle file"}
 }
 \value{
 A data frame, with details about locally available subtitles.

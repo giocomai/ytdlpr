@@ -8,7 +8,7 @@
 #' Argument definition are quoted from the original yt-dlp project.
 #'
 #' @param yt_id YouTube identifier of a video or full url to a video.
-#' @param subtitle Defaults to FALSE. "Write subtitle file"
+#' @param subtitles Defaults to FALSE. "Write subtitle file"
 #' @param check_previous Defaults to TRUE. If FALSE, input is always downloaded.
 #'   If TRUE, and `subtitles` is TRUE, it checks that the requested language is
 #'   locally available. If subtitles is set to FALSE, the presence of *any*
