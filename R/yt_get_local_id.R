@@ -1,6 +1,7 @@
 #' Lists locally available files that can be attributed to a video id
 #'
 #' @inheritParams yt_get_playlist_folder
+#' @inheritParams yt_extract_id
 #'
 #' @return A data frame, with two columns, `yt_id` and `path`.
 #' @export

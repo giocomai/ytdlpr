@@ -14,6 +14,8 @@ yt_get_local_subtitles(
 )
 }
 \arguments{
+\item{yt_id}{Url or unique identifier of a YouTube video.}
+
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
 \item{sub_lang}{Defaults to NULL. If not given, all local subtitles are

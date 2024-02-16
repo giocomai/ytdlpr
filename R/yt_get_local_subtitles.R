@@ -5,6 +5,7 @@
 #' @param sub_lang Defaults to NULL. If not given, all local subtitles are
 #'   returned. If given, only subtitles in the given sub_lang are returned.
 #' @inheritParams yt_get_playlist_folder
+#' @inheritParams yt_extract_id
 #'
 #' @return A data frame (a tibble) with details on locally available subtitle
 #'   files.

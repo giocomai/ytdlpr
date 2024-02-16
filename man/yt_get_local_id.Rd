@@ -7,6 +7,8 @@
 yt_get_local_id(yt_id = NULL, playlist = NULL, yt_base_folder = NULL)
 }
 \arguments{
+\item{yt_id}{Url or unique identifier of a YouTube video.}
+
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
