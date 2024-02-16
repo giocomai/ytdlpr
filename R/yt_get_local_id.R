@@ -9,7 +9,8 @@
 #' \dontrun{
 #' yt_get_local_id()
 #' }
-yt_get_local_id <- function(playlist = NULL,
+yt_get_local_id <- function(yt_id = NULL,
+                            playlist = NULL,
                             yt_base_folder = NULL) {
   if (is.null(playlist) == FALSE) {
     folder_path <- yt_get_playlist_folder(
@@ -27,12 +28,19 @@ yt_get_local_id <- function(playlist = NULL,
     type = "file"
   )
 
-  tibble::tibble(path = all_files_v) |>
+  yt_id_df <- tibble::tibble(path = all_files_v) |>
     dplyr::mutate(yt_id = stringr::str_extract(
       string = .data[["path"]],
       pattern = "(?<=\\[)[[:print:]]{11}]\\."
     ) |>
       stringr::str_remove(pattern = "]\\.$")) |>
     dplyr::filter(is.na(.data[["yt_id"]]) == FALSE) |>
-    dplyr::relocate(.data[["yt_id"]], .data[["path"]])
+    dplyr::relocate("yt_id", "path")
+
+  if (is.null(yt_id) == FALSE) {
+    yt_id_df <- yt_id_df |>
+      dplyr::filter(.data[["yt_id"]] %in% yt_extract_id(!!yt_id))
+  }
+
+  yt_id_df
 }

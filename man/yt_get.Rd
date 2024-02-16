@@ -7,6 +7,7 @@
 yt_get(
   yt_id = NULL,
   playlist = NULL,
+  check_previous = TRUE,
   subtitles = FALSE,
   sub_lang = "en",
   sub_format = "vtt",
@@ -27,6 +28,12 @@ yt_get(
 \item{yt_id}{YouTube identifier of a video or full url to a video.}
 
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
+
+\item{check_previous}{Defaults to TRUE. If FALSE, input is always downloaded.
+If TRUE, and \code{subtitles} is TRUE, it checks that the requested language is
+locally available. If subtitles is set to FALSE, the presence of \emph{any}
+local file associated with a given id prevents further downloads associated
+with it.}
 
 \item{sub_lang}{Defaults to "en". If more than one, can be given as comma
 separated two letter codes, or a as vector.}
@@ -68,7 +75,10 @@ a full list, see the \href{https://github.com/yt-dlp/yt-dlp}{original documentat
 A data frame, with details about locally available subtitles.
 }
 \description{
-If subtitle is set to TRUE, it checks that the subtitles in the language set with \code{sub_lang} are available. In all other cases, by defaults, it skips downloads if any previous file associated with a given video identifier has been downloaded.
+If subtitle is set to TRUE, it checks that the subtitles in the sub_lang set
+with \code{sub_lang} are available. In all other cases, by defaults, it skips
+downloads if \emph{any} previous file associated with a given video identifier has
+been downloaded. Set \code{check_previous} to FALSE to always download files.
 }
 \details{
 Argument definition are quoted from the original yt-dlp project.
@@ -77,6 +87,14 @@ Argument definition are quoted from the original yt-dlp project.
 \dontrun{
 yt_get(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbtMcDKmT2dRAfjmSFwOt1Vj"
+)
+
+yt_get(
+  yt_id = "https://youtu.be/WXPBOfRtXQE",
+  subtitles = TRUE,
+  video = TRUE,
+  description = TRUE,
+  info_json = TRUE
 )
 }
 }

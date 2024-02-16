@@ -50,10 +50,6 @@ Throughout the current session, this will be the main folder where I'll be stori
 
 What happens next depends a bit on your starting point, i.e., if you have a set of urls of individual videos or if you want to retrieve subtitles about a whole playlist. 
 
-### Retrieve subtitles starting from single video urls/id
-
-[to do]
-
 ### Retrieve subtitles starting from a playlist
 
 A first step, that if not explicitly done will be performed implicitly by other playlist-based functions is to retrieve all identifiers from the given playlist.
@@ -65,7 +61,7 @@ yt_get_playlist_id(
 ```
 Notice that the data are stored locally: unless the `update` argument in `yt_get_playlist_id()` is set to TRUE, following calls to this function will just retrieve locally stored identifiers.
 
-If all we really care about is subtitles, we can skip this step and move on to downloading subtitles. By default, this will proceed with downloading English language subtitles, but you can customise this using the dedicated function.
+If all we really care about is subtitles, we can skip this step and move on to downloading subtitles. By default, this will proceed with downloading English sub_lang subtitles, but you can customise this using the dedicated function.
 
 ```{r yt_get_subtitles_playlist, eval = FALSE}
 yt_get(
@@ -88,7 +84,7 @@ yt_get(
 
 Or, yf you want to parse only subtitles that are locally available, you can achieve the same with `yt_get_local_subtitles()`: 
 
-```{r yt_get_local_subtitles and yt_read_vtt}
+```{r yt_get_local_subtitles and yt_read_vtt, message = FALSE}
 subtitles_df <- yt_get_local_subtitles(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
 ) |>
@@ -118,7 +114,7 @@ for (i in selected_rover_df[["link"]]) {
 }
 ```
 
-Let's try again, with an example that may be more relevant for R users: all references to "community" in the video of Posit Conf 2023
+Let's try again, with an example that may be more relevant and perhaps more inspiring for possible use cases among R users: all references to "community" in the playlist of Posit Conf 2023:
 
 ```{r positconf2023, message = FALSE}
 positconf2023_df <- yt_get(
@@ -148,3 +144,20 @@ for (i in selected_community_df[["link"]]) {
 }
 ```
 
+## Retrieve subtitles starting from single video urls/id
+
+At the most basic, if you just want to download a single video rather than a whole playlist, there is not much of a difference, you just pass the `yt_id` argument instead of `playlist`. Notice that `yt_id` accepts both YouTube identifiers (the 11-character string mostly at the end of YouTube links) as well as full URLs to a single video clip. 
+
+```{r get_single_video}
+yt_get(
+  yt_id = "https://youtu.be/WXPBOfRtXQE",
+  subtitles = TRUE,
+  video = TRUE,
+  description = TRUE,
+  info_json = TRUE
+)
+```
+
+## License and disclaimers. 
+
+This package is released with a MIT license. Much of what it does requires external pacakges (in particular, [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/): see their repositories for further license details and disclaimers.

@@ -6,8 +6,9 @@
 frame}
 \usage{
 yt_get_local_subtitles(
+  yt_id = NULL,
   playlist = NULL,
-  language = NULL,
+  sub_lang = NULL,
   sub_format = "vtt",
   yt_base_folder = NULL
 )
@@ -15,8 +16,8 @@ yt_get_local_subtitles(
 \arguments{
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
-\item{language}{Defaults to NULL. If not given, all local subtitles are
-returned. If given, only subtitles in the given language are returned.}
+\item{sub_lang}{Defaults to NULL. If not given, all local subtitles are
+returned. If given, only subtitles in the given sub_lang are returned.}
 
 \item{sub_format}{Defaults to "vtt". File extension of the subtitle.}
 

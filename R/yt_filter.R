@@ -36,14 +36,14 @@ yt_filter <- function(pattern,
                       regex = TRUE,
                       playlist = NULL,
                       subtitles_df = NULL,
-                      language = NULL,
+                      sub_lang = NULL,
                       sub_format = "vtt",
                       lag = -3,
                       yt_base_folder = NULL) {
   if (is.null(subtitles_df)) {
     subtitles_df <- yt_get_local_subtitles(
       playlist = playlist,
-      language = language,
+      sub_lang = sub_lang,
       sub_format = sub_format,
       yt_base_folder = yt_base_folder
     ) |>

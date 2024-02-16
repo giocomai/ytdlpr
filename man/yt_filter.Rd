@@ -10,7 +10,7 @@ yt_filter(
   regex = TRUE,
   playlist = NULL,
   subtitles_df = NULL,
-  language = NULL,
+  sub_lang = NULL,
   sub_format = "vtt",
   lag = -3,
   yt_base_folder = NULL
@@ -28,8 +28,8 @@ yt_filter(
 \item{subtitles_df}{Defaults to NULL. If given must be a data frame,
 typically generated with \code{yt_get_local_subtitles()}.}
 
-\item{language}{Defaults to NULL. If not given, all local subtitles are
-returned. If given, only subtitles in the given language are returned.}
+\item{sub_lang}{Defaults to NULL. If not given, all local subtitles are
+returned. If given, only subtitles in the given sub_lang are returned.}
 
 \item{sub_format}{Defaults to "vtt". File extension of the subtitle.}
 

@@ -30,8 +30,8 @@ yt_read_vtt <- function(path) {
         progress = FALSE
       )
 
-      current_language <- input_text[[3]] |>
-        stringr::str_remove("Language: ")
+      current_sub_lang <- input_text[[3]] |>
+        stringr::str_remove("sub_lang: ")
 
       current_title <- current_path |>
         fs::path_file() |>
@@ -88,9 +88,9 @@ yt_read_vtt <- function(path) {
         dplyr::mutate(
           yt_id = current_id,
           #  title = current_title,
-          language = current_language
+          sub_lang = current_sub_lang
         ) |>
-        dplyr::relocate(yt_id, language)
+        dplyr::relocate(yt_id, sub_lang)
     }
   ) |>
     purrr::list_rbind()

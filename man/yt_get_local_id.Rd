@@ -4,7 +4,7 @@
 \alias{yt_get_local_id}
 \title{Lists locally available files that can be attributed to a video id}
 \usage{
-yt_get_local_id(playlist = NULL, yt_base_folder = NULL)
+yt_get_local_id(yt_id = NULL, playlist = NULL, yt_base_folder = NULL)
 }
 \arguments{
 \item{playlist}{Playlist, either as full url from Youtube or as id.}

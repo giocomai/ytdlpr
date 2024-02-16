@@ -2,8 +2,8 @@
 #' frame
 #'
 #' @param sub_format Defaults to "vtt". File extension of the subtitle.
-#' @param language Defaults to NULL. If not given, all local subtitles are
-#'   returned. If given, only subtitles in the given language are returned.
+#' @param sub_lang Defaults to NULL. If not given, all local subtitles are
+#'   returned. If given, only subtitles in the given sub_lang are returned.
 #' @inheritParams yt_get_playlist_folder
 #'
 #' @return A data frame (a tibble) with details on locally available subtitle
@@ -14,8 +14,9 @@
 #' \dontrun{
 #' yt_get_local_subtitles()
 #' }
-yt_get_local_subtitles <- function(playlist = NULL,
-                                   language = NULL,
+yt_get_local_subtitles <- function(yt_id = NULL,
+                                   playlist = NULL,
+                                   sub_lang = NULL,
                                    sub_format = "vtt",
                                    yt_base_folder = NULL) {
   if (is.null(playlist) == FALSE) {
@@ -46,7 +47,7 @@ yt_get_local_subtitles <- function(playlist = NULL,
     dplyr::mutate(metadata = metadata |>
       stringr::str_remove(stringr::fixed(stringr::str_c(".", sub_format, collapse = "")))) |>
     dplyr::mutate(
-      language = metadata |>
+      sub_lang = metadata |>
         stringr::str_extract(pattern = "[[:alpha:]]{2}$"),
       yt_id = metadata |>
         stringr::str_extract(pattern = "(?<=\\[)[[:print:]]{11}"),
@@ -58,17 +59,22 @@ yt_get_local_subtitles <- function(playlist = NULL,
     ) |>
     dplyr::select(
       yt_id,
-      language,
+      sub_lang,
       sub_format,
       title,
       playlist,
       path
     )
 
-  if (is.null(language) == FALSE) {
-    subtitles_df |>
-      dplyr::filter(language %in% language)
-  } else {
-    subtitles_df
+  if (is.null(sub_lang) == FALSE) {
+    subtitles_df <- subtitles_df |>
+      dplyr::filter(.data[["sub_lang"]] %in% !!sub_lang)
   }
+
+  if (is.null(yt_id) == FALSE) {
+    subtitles_df <- subtitles_df |>
+      dplyr::filter(.data[["yt_id"]] %in% yt_extract_id(!!yt_id))
+  }
+
+  subtitles_df
 }
