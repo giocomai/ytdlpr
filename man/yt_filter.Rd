@@ -5,8 +5,8 @@
 \title{Filter subtitles and link back the original source}
 \usage{
 yt_filter(
+  subtitles_df,
   pattern,
-  subtitles_df = NULL,
   ignore_case = TRUE,
   regex = TRUE,
   playlist = NULL,
@@ -17,10 +17,10 @@ yt_filter(
 )
 }
 \arguments{
-\item{pattern}{A character string.}
-
 \item{subtitles_df}{Defaults to NULL. If given must be a data frame,
 typically generated with \code{yt_get_local_subtitles()}.}
+
+\item{pattern}{A character string.}
 
 \item{ignore_case}{Defaults to TRUE.}
 

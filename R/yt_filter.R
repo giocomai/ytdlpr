@@ -1,10 +1,10 @@
 #' Filter subtitles and link back the original source
 #'
+#' @param subtitles_df Defaults to NULL. If given must be a data frame,
+#'   typically generated with `yt_get_local_subtitles()`.
 #' @param pattern A character string.
 #' @param ignore_case Defaults to TRUE.
 #' @param regex Defaults to TRUE.
-#' @param subtitles_df Defaults to NULL. If given must be a data frame,
-#'   typically generated with `yt_get_local_subtitles()`.
 #' @param lag Defaults to `-3`. Refers to the number of seconds before or after
 #'   the start time as recorded in the subtitles. Minus three or four seems to
 #'   generally be a good fit.
@@ -31,8 +31,8 @@
 #' }
 #'
 #' @importFrom rlang .data
-yt_filter <- function(pattern,
-                      subtitles_df = NULL,
+yt_filter <- function(subtitles_df,
+                      pattern,
                       ignore_case = TRUE,
                       regex = TRUE,
                       playlist = NULL,
@@ -40,15 +40,6 @@ yt_filter <- function(pattern,
                       sub_format = "vtt",
                       lag = -3,
                       yt_base_folder = NULL) {
-  if (is.null(subtitles_df)) {
-    subtitles_df <- yt_get_local_subtitles(
-      playlist = playlist,
-      sub_lang = sub_lang,
-      sub_format = sub_format,
-      yt_base_folder = yt_base_folder
-    ) |>
-      yt_read_vtt()
-  }
 
   if (regex) {
     filter_pattern <- stringr::regex(pattern = pattern, ignore_case = ignore_case)
