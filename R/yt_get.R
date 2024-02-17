@@ -1,28 +1,36 @@
-#' Retrieve video or subtitles from a playlist or by id
+#' Retrieve video or write_subs from a playlist or by id
 #'
-#' If subtitle is set to TRUE, it checks that the subtitles in the sub_lang set
-#' with `sub_lang` are available. In all other cases, by defaults, it skips
-#' downloads if *any* previous file associated with a given video identifier has
-#' been downloaded. Set `check_previous` to FALSE to always download files.
+#' If `write_subs` or `auto_subs` is set to TRUE, it checks that the
+#' subtitles in the language set with `sub_lang` are available. In all other
+#' cases, by defaults, it skips ' downloads if *any* previous file associated
+#' with a given video identifier has ' been downloaded. Set `check_previous` to
+#' FALSE to always download files.
 #'
 #' Argument definition are quoted from the original yt-dlp project.
 #'
-#' @param yt_id YouTube identifier of a video or full url to a video.
-#' @param subtitles Defaults to FALSE. "Write subtitle file"
+#' @param yt_id YouTube identifier of a video or full url to a video. Normally a
+#'   vector, but if a data frame is given, `yt_id` column is taken as input
+#'   (useful for pipe-based workflows).
+#' @param subs Defaults to FALSE. "Write subtitle file".
+#' @param auto_subs Defaults to FALSE "Write automatically generated
+#'   subtitle file".
 #' @param check_previous Defaults to TRUE. If FALSE, input is always downloaded.
-#'   If TRUE, and `subtitles` is TRUE, it checks that the requested language is
-#'   locally available. If subtitles is set to FALSE, the presence of *any*
-#'   local file associated with a given id prevents further downloads associated
-#'   with it.
+#'   If TRUE, and `subs` is TRUE, it checks that the requested language is
+#'   locally available. If subtitles is set to FALSE, and only one of the write
+#'   options is enabled, it checks for the local availabilty of relevant files.
+#'   For some options, the presence of *any* local file associated with a given
+#'   id prevents further downloads associated with it.
 #' @param sub_lang Defaults to "en". If more than one, can be given as comma
 #'   separated two letter codes, or a as vector.
 #' @param sub_format Defaults to "vtt". Other formats not yet supported.
-#' @param write_auto_sub Defaults to TRUE. "Write automatically generated subtitle file"
 #' @param video Defaults to FALSE. Download the video files.
-#' @param info_json Defaults to FALSE. "Write video metadata to a .info.json file"
+#' @param info_json Defaults to FALSE. "Write video metadata to a .info.json
+#'   file"
 #' @param thumbnail Defaults to FALSE. "Write thumbnail image to disk"
-#' @param description Defaults to FALSE. "Write video description to a .description file"
-#' @param comments Defaults to FALSE. "Retrieve video comments to be placed in the infojson."
+#' @param description Defaults to FALSE. "Write video description to a
+#'   .description file"
+#' @param comments Defaults to FALSE. "Retrieve video comments to be placed in
+#'   the infojson."
 #' @param min_sleep_interval "Number of seconds to sleep before each download.
 #'   This is the minimum time to sleep when used along with
 #'   --max-sleep-interval"
@@ -56,15 +64,15 @@
 yt_get <- function(yt_id = NULL,
                    playlist = NULL,
                    check_previous = TRUE,
-                   subtitles = FALSE,
                    sub_lang = "en",
                    sub_format = "vtt",
+                   subs = FALSE,
+                   auto_subs = FALSE,
                    video = FALSE,
                    description = FALSE,
-                   comments = FALSE,
                    info_json = FALSE,
+                   comments = FALSE,
                    thumbnail = FALSE,
-                   write_auto_sub = TRUE,
                    min_sleep_interval = 1,
                    max_sleep_interval = 8,
                    sleep_subtitles = 2,
@@ -72,6 +80,10 @@ yt_get <- function(yt_id = NULL,
                    yt_base_folder = NULL) {
   if (is.null(yt_id) & is.null(playlist)) {
     cli::cli_abort("Either `yt_id` or `playlist` must be given.")
+  }
+
+  if (is.data.frame(yt_id)) {
+    yt_id <- unique(yt_id[["yt_id"]])
   }
 
   if (length(sub_lang) > 1) {
@@ -93,7 +105,7 @@ yt_get <- function(yt_id = NULL,
       playlist_df <- tibble::tibble(yt_id = yt_extract_id(yt_id))
     }
 
-    if (subtitles) {
+    if (subs | auto_subs) {
       previous_df <- yt_get_local_subtitles(
         yt_id = yt_id,
         sub_format = sub_format,
@@ -102,6 +114,27 @@ yt_get <- function(yt_id = NULL,
         dplyr::filter(
           .data[["sub_lang"]] %in% !!sub_lang
         )
+    } else if (video) {
+      previous_df <- yt_get_local_id(
+        file_extension = "webm|mp4|mkv",
+        yt_id = yt_id,
+        playlist = playlist,
+        yt_base_folder = yt_base_folder
+      )
+    } else if (info_json) {
+      previous_df <- yt_get_local_id(
+        file_extension = "info\\.json",
+        yt_id = yt_id,
+        playlist = playlist,
+        yt_base_folder = yt_base_folder
+      )
+    } else if (description) {
+      previous_df <- yt_get_local_id(
+        file_extension = "description",
+        yt_id = yt_id,
+        playlist = playlist,
+        yt_base_folder = yt_base_folder
+      )
     } else {
       previous_df <- yt_get_local_id(
         yt_id = yt_id,
@@ -134,7 +167,7 @@ yt_get <- function(yt_id = NULL,
 
   yt_command_params <- custom_options
 
-  if (subtitles) {
+  if (subs) {
     yt_command_params <- stringr::str_c(yt_command_params, "--write-subs", sep = " ")
   }
 
@@ -154,7 +187,7 @@ yt_get <- function(yt_id = NULL,
     yt_command_params <- stringr::str_c(yt_command_params, "--write-thumbnail  ", sep = " ")
   }
 
-  if (write_auto_sub) {
+  if (auto_subs) {
     yt_command_params <- stringr::str_c(yt_command_params, "--write-auto-sub", sep = " ")
   }
 
@@ -182,7 +215,7 @@ yt_get <- function(yt_id = NULL,
 
   system(command = yt_command)
 
-  if (subtitles) {
+  if (subs | auto_subs) {
     yt_get_local_subtitles(
       yt_id = yt_id,
       playlist = playlist,

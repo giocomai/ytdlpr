@@ -6,9 +6,12 @@
 #'   will be stored inside a folder called `0_trimmed_video` inside your base
 #'   folder as defined by `yt_base_folder` or options. If you want an absolute
 #'   path, use the argument `destination_path` instead.
+#' @param check_previous Defaults to TRUE. If a file with the same id, same
+#'   starting time, and same duration has already been stored in the destination
+#'   folder, skip it.
 #' @param destination_path Defaults to NULL. Location where trimmed video files
 #'   will be stored. If given, takes precedence over `destination_folder`.
-#' @param duration Duration in seconds of the trimmed video. Defaults to 6.
+#' @param duration Duration in seconds of the trimmed video. Defaults to 5.
 #' @param simulate Defaults to FALSE. Similiarly to the same argument in
 #'   `yt-dlp`, if set to TRUE nothing is actually done
 #' @inheritParams yt_get_playlist_folder
@@ -33,7 +36,8 @@
 #' }
 yt_trim <- function(subtitles_df,
                     lag = -3,
-                    duration = 6,
+                    duration = 5,
+                    check_previous = TRUE,
                     video_file_extension = "webm|mp4|mkv",
                     simulate = FALSE,
                     destination_folder = "0_trimmed_video",
@@ -53,7 +57,6 @@ yt_trim <- function(subtitles_df,
       destination_folder
     )
   }
-
 
   convert_df <- subtitles_df |>
     dplyr::select("yt_id", "start_time") |>
@@ -125,6 +128,11 @@ yt_trim <- function(subtitles_df,
     dplyr::ungroup() |>
     dplyr::distinct()
 
+  if (check_previous) {
+    convert_df <- convert_df |>
+      dplyr::filter(!fs::file_exists(path = .data[["destination_file"]]))
+  }
+
   if (simulate) {
     return(convert_df)
   }
@@ -135,6 +143,8 @@ yt_trim <- function(subtitles_df,
       system(current_command)
     }
   )
+
+  cli::cli_alert_success("Trimmed video files stored in {.path {destination_path}}")
 
   convert_df
 }

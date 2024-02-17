@@ -2,21 +2,21 @@
 % Please edit documentation in R/yt_get.R
 \name{yt_get}
 \alias{yt_get}
-\title{Retrieve video or subtitles from a playlist or by id}
+\title{Retrieve video or write_subs from a playlist or by id}
 \usage{
 yt_get(
   yt_id = NULL,
   playlist = NULL,
   check_previous = TRUE,
-  subtitles = FALSE,
   sub_lang = "en",
   sub_format = "vtt",
+  subs = FALSE,
+  auto_subs = FALSE,
   video = FALSE,
   description = FALSE,
-  comments = FALSE,
   info_json = FALSE,
+  comments = FALSE,
   thumbnail = FALSE,
-  write_auto_sub = TRUE,
   min_sleep_interval = 1,
   max_sleep_interval = 8,
   sleep_subtitles = 2,
@@ -25,34 +25,41 @@ yt_get(
 )
 }
 \arguments{
-\item{yt_id}{YouTube identifier of a video or full url to a video.}
+\item{yt_id}{YouTube identifier of a video or full url to a video. Normally a
+vector, but if a data frame is given, \code{yt_id} column is taken as input
+(useful for pipe-based workflows).}
 
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
 
 \item{check_previous}{Defaults to TRUE. If FALSE, input is always downloaded.
-If TRUE, and \code{subtitles} is TRUE, it checks that the requested language is
-locally available. If subtitles is set to FALSE, the presence of \emph{any}
-local file associated with a given id prevents further downloads associated
-with it.}
-
-\item{subtitles}{Defaults to FALSE. "Write subtitle file"}
+If TRUE, and \code{subs} is TRUE, it checks that the requested language is
+locally available. If subtitles is set to FALSE, and only one of the write
+options is enabled, it checks for the local availabilty of relevant files.
+For some options, the presence of \emph{any} local file associated with a given
+id prevents further downloads associated with it.}
 
 \item{sub_lang}{Defaults to "en". If more than one, can be given as comma
 separated two letter codes, or a as vector.}
 
 \item{sub_format}{Defaults to "vtt". Other formats not yet supported.}
 
+\item{subs}{Defaults to FALSE. "Write subtitle file".}
+
+\item{auto_subs}{Defaults to FALSE "Write automatically generated
+subtitle file".}
+
 \item{video}{Defaults to FALSE. Download the video files.}
 
-\item{description}{Defaults to FALSE. "Write video description to a .description file"}
+\item{description}{Defaults to FALSE. "Write video description to a
+.description file"}
 
-\item{comments}{Defaults to FALSE. "Retrieve video comments to be placed in the infojson."}
+\item{info_json}{Defaults to FALSE. "Write video metadata to a .info.json
+file"}
 
-\item{info_json}{Defaults to FALSE. "Write video metadata to a .info.json file"}
+\item{comments}{Defaults to FALSE. "Retrieve video comments to be placed in
+the infojson."}
 
 \item{thumbnail}{Defaults to FALSE. "Write thumbnail image to disk"}
-
-\item{write_auto_sub}{Defaults to TRUE. "Write automatically generated subtitle file"}
 
 \item{min_sleep_interval}{"Number of seconds to sleep before each download.
 This is the minimum time to sleep when used along with
@@ -75,10 +82,11 @@ a full list, see the \href{https://github.com/yt-dlp/yt-dlp}{original documentat
 A data frame, with details about locally available subtitles.
 }
 \description{
-If subtitle is set to TRUE, it checks that the subtitles in the sub_lang set
-with \code{sub_lang} are available. In all other cases, by defaults, it skips
-downloads if \emph{any} previous file associated with a given video identifier has
-been downloaded. Set \code{check_previous} to FALSE to always download files.
+If \code{write_subs} or \code{auto_subs} is set to TRUE, it checks that the
+subtitles in the language set with \code{sub_lang} are available. In all other
+cases, by defaults, it skips ' downloads if \emph{any} previous file associated
+with a given video identifier has ' been downloaded. Set \code{check_previous} to
+FALSE to always download files.
 }
 \details{
 Argument definition are quoted from the original yt-dlp project.

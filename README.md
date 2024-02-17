@@ -88,13 +88,15 @@ will just retrieve locally stored identifiers.
 
 If all we really care about is subtitles, we can skip this step and move
 on to downloading subtitles. By default, this will proceed with
-downloading English sub_lang subtitles, but you can customise this using
-the dedicated function.
+downloading English language subtitles, but you can customise this using
+the dedicated function. Notice that there are both `subs` and
+`auto_subs` options. Most video clips will have only automatic
+subtitles.
 
 ``` r
 yt_get(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
-  subtitles = TRUE
+  auto_subs = TRUE
 )
 ```
 
@@ -108,10 +110,10 @@ with:
 ``` r
 yt_get(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
-  subtitles = TRUE
+  auto_subs = TRUE
 ) |>
   yt_read_vtt()
-#> # A tibble: 58,960 × 5
+#> # A tibble: 59,093 × 5
 #>    yt_id       sub_lang     line_id text                              start_time
 #>    <chr>       <chr>          <int> <chr>                             <chr>     
 #>  1 -0pPBAiJaYk Language: en       1 and in doing so we identified a … 00:00:07.…
@@ -124,7 +126,7 @@ yt_get(
 #>  8 -0pPBAiJaYk Language: en       8 every single time we were creati… 00:00:18.…
 #>  9 -0pPBAiJaYk Language: en       9 script and new plot um important… 00:00:21.…
 #> 10 -0pPBAiJaYk Language: en      10 wasn't standard across the board… 00:00:23.…
-#> # ℹ 58,950 more rows
+#> # ℹ 59,083 more rows
 ```
 
 Or, yf you want to parse only subtitles that are locally available, you
@@ -179,7 +181,7 @@ more inspiring for possible use cases among R users: all references to
 ``` r
 positconf2023_df <- yt_get(
   playlist = "https://www.youtube.com/playlist?list=PL9HYL-VRX0oRFZslRGHwHuwea7SvAATHp",
-  subtitles = TRUE
+  auto_subs = TRUE
 ) |>
   yt_read_vtt()
 
@@ -188,7 +190,7 @@ community_df <- yt_filter(
   subtitles_df = positconf2023_df
 )
 community_df
-#> # A tibble: 201 × 6
+#> # A tibble: 204 × 6
 #>    yt_id       sub_lang     line_id text                        start_time link 
 #>    <chr>       <chr>          <int> <chr>                       <chr>      <chr>
 #>  1 -0pPBAiJaYk Language: en     306 team it's created a commun… 00:11:15.… http…
@@ -201,17 +203,17 @@ community_df
 #>  8 18vfcf46ozE Language: en     322 American Community survey … 00:12:39.… http…
 #>  9 18vfcf46ozE Language: en     396 is on community             00:15:22.… http…
 #> 10 18vfcf46ozE Language: en     407 community so as our users … 00:15:44.… http…
-#> # ℹ 191 more rows
+#> # ℹ 194 more rows
 ```
 
 Here just a random sample of examples:
 
-- <https://youtu.be/zCxT6fExFjY?t=958>
-- <https://youtu.be/ncDEqHxMWnE?t=536>
+- <https://youtu.be/nGmhPEl2cfg?t=403>
 - <https://youtu.be/ZCEadMMY6mE?t=264>
 - <https://youtu.be/hfqjyeA_z7s?t=1088>
 - <https://youtu.be/awTzbYXTlSc?t=141>
 - <https://youtu.be/EihuM4oyOvs?t=1035>
+- <https://youtu.be/OvKPTPqflKQ?t=518>
 
 ## Retrieve subtitles starting from single video urls/id
 
@@ -224,7 +226,7 @@ YouTube links) as well as full URLs to a single video clip.
 ``` r
 yt_get(
   yt_id = "https://youtu.be/WXPBOfRtXQE",
-  subtitles = TRUE,
+  auto_subs = TRUE,
   video = TRUE,
   description = TRUE,
   info_json = TRUE
@@ -262,17 +264,13 @@ previously downloaded.
 yt_get(
   yt_id = trim_community_df[["yt_id"]],
   video = TRUE,
-  check_previous = TRUE # but set to FALSE, if you downloaded previously subtitles but not the video
+  check_previous = TRUE
 )
-#> # A tibble: 6 × 2
+#> # A tibble: 2 × 2
 #>   yt_id       path                                                              
 #>   <chr>       <fs::path>                                                        
-#> 1 -0pPBAiJaYk …hemes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].en.vtt
-#> 2 -0pPBAiJaYk …f Themes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].mkv
-#> 3 18vfcf46ozE …ding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].en.vtt
-#> 4 18vfcf46ozE …ponding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].mkv
-#> 5 -0pPBAiJaYk …hemes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].en.vtt
-#> 6 18vfcf46ozE …ding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].en.vtt
+#> 1 -0pPBAiJaYk …f Themes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].mkv
+#> 2 18vfcf46ozE …ponding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].mkv
 ```
 
 And then the following would take those files, and extract only the
@@ -280,13 +278,15 @@ relevant part using `ffmpeg`. You’ll find the trimmed video clips in a
 `0_trimmed_video` folder, along with other subtitles files.
 
 ``` r
-yt_trim(subtitles_df = trim_community_df,
-        simulate = TRUE)
+yt_trim(
+  subtitles_df = trim_community_df,
+  simulate = TRUE
+)
 #> # A tibble: 2 × 9
 #>   yt_id       start_time   path                start_time_period end_time_period
 #>   <chr>       <chr>        <fs::path>          <Period>          <Period>       
-#> 1 -0pPBAiJaYk 00:11:15.670 … [-0pPBAiJaYk].mkv 11M 12.67S        11M 18.67S     
-#> 2 18vfcf46ozE 00:12:39.710 … [18vfcf46ozE].mkv 12M 36.71S        12M 42.71S     
+#> 1 -0pPBAiJaYk 00:11:15.670 … [-0pPBAiJaYk].mkv 11M 12.67S        11M 17.67S     
+#> 2 18vfcf46ozE 00:12:39.710 … [18vfcf46ozE].mkv 12M 36.71S        12M 41.71S     
 #> # ℹ 4 more variables: start_time_string <chr>, end_time_string <chr>,
 #> #   destination_file <fs::path>, ffmpeg_command <chr>
 ```

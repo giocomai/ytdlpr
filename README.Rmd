@@ -63,12 +63,12 @@ yt_get_playlist_id(
 ```
 Notice that the data are stored locally: unless the `update` argument in `yt_get_playlist_id()` is set to TRUE, following calls to this function will just retrieve locally stored identifiers.
 
-If all we really care about is subtitles, we can skip this step and move on to downloading subtitles. By default, this will proceed with downloading English sub_lang subtitles, but you can customise this using the dedicated function.
+If all we really care about is subtitles, we can skip this step and move on to downloading subtitles. By default, this will proceed with downloading English language subtitles, but you can customise this using the dedicated function. Notice that there are both `subs` and `auto_subs` options. Most video clips will have only automatic subtitles. 
 
 ```{r yt_get_subtitles_playlist, eval = FALSE}
 yt_get(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
-  subtitles = TRUE
+  auto_subs = TRUE
 )
 ```
 
@@ -79,7 +79,7 @@ The next step is to actually import these subtitles in a format that is easy to 
 ```{r yt_get_subtitles_playlist and yt_read_vtt, message = FALSE}
 yt_get(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
-  subtitles = TRUE
+  auto_subs = TRUE
 ) |>
   yt_read_vtt()
 ```
@@ -121,7 +121,7 @@ Let's try again, with an example that may be more relevant and perhaps more insp
 ```{r positconf2023, message = FALSE}
 positconf2023_df <- yt_get(
   playlist = "https://www.youtube.com/playlist?list=PL9HYL-VRX0oRFZslRGHwHuwea7SvAATHp",
-  subtitles = TRUE
+  auto_subs = TRUE
 ) |>
   yt_read_vtt()
 
@@ -153,7 +153,7 @@ At the most basic, if you just want to download a single video rather than a who
 ```{r get_single_video}
 yt_get(
   yt_id = "https://youtu.be/WXPBOfRtXQE",
-  subtitles = TRUE,
+  auto_subs = TRUE,
   video = TRUE,
   description = TRUE,
   info_json = TRUE
@@ -177,14 +177,16 @@ We would want to make sure that the relevant video clips have been previously do
 yt_get(
   yt_id = trim_community_df[["yt_id"]],
   video = TRUE,
-  check_previous = TRUE # but set to FALSE, if you downloaded previously subtitles but not the video
+  check_previous = TRUE
 )
 ```
 And then the following would take those files, and extract only the relevant part using `ffmpeg`. You'll find the trimmed video clips in a `0_trimmed_video` folder, along with other subtitles files. 
 
 ```{r yt_trim}
-yt_trim(subtitles_df = trim_community_df,
-        simulate = TRUE)
+yt_trim(
+  subtitles_df = trim_community_df,
+  simulate = TRUE
+)
 ```
 
 

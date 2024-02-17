@@ -7,7 +7,8 @@
 yt_trim(
   subtitles_df,
   lag = -3,
-  duration = 6,
+  duration = 5,
+  check_previous = TRUE,
   video_file_extension = "webm|mp4|mkv",
   simulate = FALSE,
   destination_folder = "0_trimmed_video",
@@ -23,7 +24,11 @@ combination of \code{\link[=yt_read_vtt]{yt_read_vtt()}} and \code{\link[=yt_fil
 the start time as recorded in the subtitles. Minus three or four seems to
 generally be a good fit.}
 
-\item{duration}{Duration in seconds of the trimmed video. Defaults to 6.}
+\item{duration}{Duration in seconds of the trimmed video. Defaults to 5.}
+
+\item{check_previous}{Defaults to TRUE. If a file with the same id, same
+starting time, and same duration has already been stored in the destination
+folder, skip it.}
 
 \item{simulate}{Defaults to FALSE. Similiarly to the same argument in
 \code{yt-dlp}, if set to TRUE nothing is actually done}

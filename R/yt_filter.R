@@ -40,7 +40,6 @@ yt_filter <- function(subtitles_df,
                       sub_format = "vtt",
                       lag = -3,
                       yt_base_folder = NULL) {
-
   if (regex) {
     filter_pattern <- stringr::regex(pattern = pattern, ignore_case = ignore_case)
   } else {
