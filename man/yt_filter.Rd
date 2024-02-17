@@ -6,10 +6,10 @@
 \usage{
 yt_filter(
   pattern,
+  subtitles_df = NULL,
   ignore_case = TRUE,
   regex = TRUE,
   playlist = NULL,
-  subtitles_df = NULL,
   sub_lang = NULL,
   sub_format = "vtt",
   lag = -3,
@@ -19,14 +19,14 @@ yt_filter(
 \arguments{
 \item{pattern}{A character string.}
 
+\item{subtitles_df}{Defaults to NULL. If given must be a data frame,
+typically generated with \code{yt_get_local_subtitles()}.}
+
 \item{ignore_case}{Defaults to TRUE.}
 
 \item{regex}{Defaults to TRUE.}
 
 \item{playlist}{Playlist, either as full url from Youtube or as id.}
-
-\item{subtitles_df}{Defaults to NULL. If given must be a data frame,
-typically generated with \code{yt_get_local_subtitles()}.}
 
 \item{sub_lang}{Defaults to NULL. If not given, all local subtitles are
 returned. If given, only subtitles in the given sub_lang are returned.}
@@ -34,14 +34,14 @@ returned. If given, only subtitles in the given sub_lang are returned.}
 \item{sub_format}{Defaults to "vtt". File extension of the subtitle.}
 
 \item{lag}{Defaults to \code{-3}. Refers to the number of seconds before or after
-the start time as recorded in the subtitles. Minus three seems to generally
-be a good default.}
+the start time as recorded in the subtitles. Minus three or four seems to
+generally be a good fit.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}
 }
 \value{
-A data frame.
+A data frame, including only lines where the given pattern is found.
 }
 \description{
 Filter subtitles and link back the original source

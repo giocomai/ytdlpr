@@ -20,7 +20,9 @@ set.seed(7)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-`ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use in R-based workflows. It is currently focused on retrieving and parsing subtitles.
+`ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use in R-based workflows. It is currently focused on retrieving and parsing subtitles, but can also download the video files, and trim them in order to include only the part of the video clip where a given subtitle line has been spoken.
+
+It assumes you have [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) installed and the only useful function that works without having `yt-dlp` installed is `yt_read_vtt()`, useful for importing into R subtitles files. If you want to use `yt_trim()` to trim video files, you will need to have [`ffmpeg`](https://ffmpeg.org/) installed.
 
 ## Installation
 
@@ -157,6 +159,34 @@ yt_get(
   info_json = TRUE
 )
 ```
+
+## Extracting only the relevant part of a video clip
+
+Let's say we want to export all mentions of a given word, downloading the original video files, trimming them, and re-exporting them. This would typicall start from a filtered set of subtitles, such as the one created above. We'll just keep the first two clips here, but of course there is no inherent limit.
+
+```{r trim_community_df}
+trim_community_df <- community_df |>
+  dplyr::slice_head(n = 2)
+
+trim_community_df
+```
+
+We would want to make sure that the relevant video clips have been previously downloaded. 
+
+```{r}
+yt_get(
+  yt_id = trim_community_df[["yt_id"]],
+  video = TRUE,
+  check_previous = TRUE # but set to FALSE, if you downloaded previously subtitles but not the video
+)
+```
+And then the following would take those files, and extract only the relevant part using `ffmpeg`. You'll find the trimmed video clips in a `0_trimmed_video` folder, along with other subtitles files. 
+
+```{r yt_trim}
+yt_trim(subtitles_df = trim_community_df,
+        simulate = TRUE)
+```
+
 
 ## License and disclaimers. 
 

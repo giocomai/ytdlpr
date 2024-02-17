@@ -11,7 +11,15 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 `ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use
 in R-based workflows. It is currently focused on retrieving and parsing
-subtitles.
+subtitles, but can also download the video files, and trim them in order
+to include only the part of the video clip where a given subtitle line
+has been spoken.
+
+It assumes you have [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)
+installed and the only useful function that works without having
+`yt-dlp` installed is `yt_read_vtt()`, useful for importing into R
+subtitles files. If you want to use `yt_trim()` to trim video files, you
+will need to have [`ffmpeg`](https://ffmpeg.org/) installed.
 
 ## Installation
 
@@ -103,20 +111,20 @@ yt_get(
   subtitles = TRUE
 ) |>
   yt_read_vtt()
-#> # A tibble: 58,092 × 5
+#> # A tibble: 58,960 × 5
 #>    yt_id       sub_lang     line_id text                              start_time
 #>    <chr>       <chr>          <int> <chr>                             <chr>     
-#>  1 Sn9Uj6vW4-Y Language: en       1 uh I'm Winston Chang I'm a uh so… 00:00:08.…
-#>  2 Sn9Uj6vW4-Y Language: en       2 engineer at posit and um earlier… 00:00:11.…
-#>  3 Sn9Uj6vW4-Y Language: en       3 year I did some work on a packag… 00:00:13.…
-#>  4 Sn9Uj6vW4-Y Language: en       4 chat stream which you can use to… 00:00:15.…
-#>  5 Sn9Uj6vW4-Y Language: en       5 build AI chat                     00:00:17.…
-#>  6 Sn9Uj6vW4-Y Language: en       6 applications uh with shiny for P… 00:00:20.…
-#>  7 Sn9Uj6vW4-Y Language: en       7 and it just sort of looks like t… 00:00:22.…
-#>  8 Sn9Uj6vW4-Y Language: en       8 if you can't read this it's fine… 00:00:23.…
-#>  9 Sn9Uj6vW4-Y Language: en       9 you know it's just basically a c… 00:00:24.…
-#> 10 Sn9Uj6vW4-Y Language: en      10 interface you ask it a question … 00:00:26.…
-#> # ℹ 58,082 more rows
+#>  1 -0pPBAiJaYk Language: en       1 and in doing so we identified a … 00:00:07.…
+#>  2 -0pPBAiJaYk Language: en       2 and in doing so we identified a … 00:00:07.…
+#>  3 -0pPBAiJaYk Language: en       3 key                               00:00:08.…
+#>  4 -0pPBAiJaYk Language: en       4 elements firstly we were repeati… 00:00:10.…
+#>  5 -0pPBAiJaYk Language: en       5 same ggplot theme elements withi… 00:00:13.…
+#>  6 -0pPBAiJaYk Language: en       6 and across multiple different fi… 00:00:15.…
+#>  7 -0pPBAiJaYk Language: en       7 meaning we were copying code chu… 00:00:17.…
+#>  8 -0pPBAiJaYk Language: en       8 every single time we were creati… 00:00:18.…
+#>  9 -0pPBAiJaYk Language: en       9 script and new plot um important… 00:00:21.…
+#> 10 -0pPBAiJaYk Language: en      10 wasn't standard across the board… 00:00:23.…
+#> # ℹ 58,950 more rows
 ```
 
 Or, yf you want to parse only subtitles that are locally available, you
@@ -180,7 +188,7 @@ community_df <- yt_filter(
   subtitles_df = positconf2023_df
 )
 community_df
-#> # A tibble: 195 × 6
+#> # A tibble: 201 × 6
 #>    yt_id       sub_lang     line_id text                        start_time link 
 #>    <chr>       <chr>          <int> <chr>                       <chr>      <chr>
 #>  1 -0pPBAiJaYk Language: en     306 team it's created a commun… 00:11:15.… http…
@@ -189,11 +197,11 @@ community_df
 #>  4 18vfcf46ozE Language: en     407 community so as our users … 00:15:44.… http…
 #>  5 18vfcf46ozE Language: en     411 community and so me now as… 00:15:53.… http…
 #>  6 18vfcf46ozE Language: en     414 appreciation for that comm… 00:16:00.… http…
-#>  7 DVQJ39_9L0U Language: en     123 community and any problems… 00:05:26.… http…
-#>  8 DVQJ39_9L0U Language: en     160 Community with individuals… 00:07:07.… http…
-#>  9 DVQJ39_9L0U Language: en     317 and Community Building the… 00:14:19.… http…
-#> 10 DVQJ39_9L0U Language: en     327 community the second organ… 00:14:46.… http…
-#> # ℹ 185 more rows
+#>  7 -0pPBAiJaYk Language: en     306 team it's created a commun… 00:11:15.… http…
+#>  8 18vfcf46ozE Language: en     322 American Community survey … 00:12:39.… http…
+#>  9 18vfcf46ozE Language: en     396 is on community             00:15:22.… http…
+#> 10 18vfcf46ozE Language: en     407 community so as our users … 00:15:44.… http…
+#> # ℹ 191 more rows
 ```
 
 Here just a random sample of examples:
@@ -225,6 +233,62 @@ yt_get(
 #>   yt_id       sub_lang sub_format title       playlist path                     
 #>   <chr>       <chr>    <chr>      <chr>       <chr>    <fs::path>               
 #> 1 WXPBOfRtXQE en       vtt        This is ESA ""       …ESA [WXPBOfRtXQE].en.vtt
+```
+
+## Extracting only the relevant part of a video clip
+
+Let’s say we want to export all mentions of a given word, downloading
+the original video files, trimming them, and re-exporting them. This
+would typicall start from a filtered set of subtitles, such as the one
+created above. We’ll just keep the first two clips here, but of course
+there is no inherent limit.
+
+``` r
+trim_community_df <- community_df |>
+  dplyr::slice_head(n = 2)
+
+trim_community_df
+#> # A tibble: 2 × 6
+#>   yt_id       sub_lang     line_id text                         start_time link 
+#>   <chr>       <chr>          <int> <chr>                        <chr>      <chr>
+#> 1 -0pPBAiJaYk Language: en     306 team it's created a communi… 00:11:15.… http…
+#> 2 18vfcf46ozE Language: en     322 American Community survey d… 00:12:39.… http…
+```
+
+We would want to make sure that the relevant video clips have been
+previously downloaded.
+
+``` r
+yt_get(
+  yt_id = trim_community_df[["yt_id"]],
+  video = TRUE,
+  check_previous = TRUE # but set to FALSE, if you downloaded previously subtitles but not the video
+)
+#> # A tibble: 6 × 2
+#>   yt_id       path                                                              
+#>   <chr>       <fs::path>                                                        
+#> 1 -0pPBAiJaYk …hemes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].en.vtt
+#> 2 -0pPBAiJaYk …f Themes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].mkv
+#> 3 18vfcf46ozE …ding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].en.vtt
+#> 4 18vfcf46ozE …ponding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].mkv
+#> 5 -0pPBAiJaYk …hemes on Top of ggplot - posit：：conf(2023) [-0pPBAiJaYk].en.vtt
+#> 6 18vfcf46ozE …ding to GitHub Issues) - posit：：conf(2023) [18vfcf46ozE].en.vtt
+```
+
+And then the following would take those files, and extract only the
+relevant part using `ffmpeg`. You’ll find the trimmed video clips in a
+`0_trimmed_video` folder, along with other subtitles files.
+
+``` r
+yt_trim(subtitles_df = trim_community_df,
+        simulate = TRUE)
+#> # A tibble: 2 × 9
+#>   yt_id       start_time   path                start_time_period end_time_period
+#>   <chr>       <chr>        <fs::path>          <Period>          <Period>       
+#> 1 -0pPBAiJaYk 00:11:15.670 … [-0pPBAiJaYk].mkv 11M 12.67S        11M 18.67S     
+#> 2 18vfcf46ozE 00:12:39.710 … [18vfcf46ozE].mkv 12M 36.71S        12M 42.71S     
+#> # ℹ 4 more variables: start_time_string <chr>, end_time_string <chr>,
+#> #   destination_file <fs::path>, ffmpeg_command <chr>
 ```
 
 ## License and disclaimers.

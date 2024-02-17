@@ -6,11 +6,11 @@
 #' @param subtitles_df Defaults to NULL. If given must be a data frame,
 #'   typically generated with `yt_get_local_subtitles()`.
 #' @param lag Defaults to `-3`. Refers to the number of seconds before or after
-#'   the start time as recorded in the subtitles. Minus three seems to generally
-#'   be a good default.
+#'   the start time as recorded in the subtitles. Minus three or four seems to
+#'   generally be a good fit.
 #' @inheritParams yt_get_local_subtitles
 #'
-#' @return A data frame.
+#' @return A data frame, including only lines where the given pattern is found.
 #' @export
 #'
 #' @examples
@@ -32,10 +32,10 @@
 #'
 #' @importFrom rlang .data
 yt_filter <- function(pattern,
+                      subtitles_df = NULL,
                       ignore_case = TRUE,
                       regex = TRUE,
                       playlist = NULL,
-                      subtitles_df = NULL,
                       sub_lang = NULL,
                       sub_format = "vtt",
                       lag = -3,
