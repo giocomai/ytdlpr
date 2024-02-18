@@ -9,6 +9,8 @@
 #' @param check_previous Defaults to TRUE. If a file with the same id, same
 #'   starting time, and same duration has already been stored in the destination
 #'   folder, skip it.
+#' @param video_file_extension Defaults to "webm|mp4|mkv". Can be set to
+#'   explictly only rely on video files stored in a specific file format.
 #' @param destination_path Defaults to NULL. Location where trimmed video files
 #'   will be stored. If given, takes precedence over `destination_folder`.
 #' @param duration Duration in seconds of the trimmed video. Defaults to 5.

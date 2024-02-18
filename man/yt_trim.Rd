@@ -30,6 +30,9 @@ generally be a good fit.}
 starting time, and same duration has already been stored in the destination
 folder, skip it.}
 
+\item{video_file_extension}{Defaults to "webm|mp4|mkv". Can be set to
+explictly only rely on video files stored in a specific file format.}
+
 \item{simulate}{Defaults to FALSE. Similiarly to the same argument in
 \code{yt-dlp}, if set to TRUE nothing is actually done}
 
