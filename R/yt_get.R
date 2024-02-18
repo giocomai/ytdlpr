@@ -108,6 +108,7 @@ yt_get <- function(yt_id = NULL,
     if (subs | auto_subs) {
       previous_df <- yt_get_local_subtitles(
         yt_id = yt_id,
+        playlist = playlist,
         sub_format = sub_format,
         yt_base_folder = yt_base_folder
       ) |>
