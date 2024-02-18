@@ -176,18 +176,31 @@ We would want to make sure that the relevant video clips have been previously do
 ```{r}
 yt_get(
   yt_id = trim_community_df[["yt_id"]],
-  video = TRUE,
-  check_previous = TRUE
+  video = TRUE
 )
 ```
+
 And then the following would take those files, and extract only the relevant part using `ffmpeg`. You'll find the trimmed video clips in a `0_trimmed_video` folder, along with other subtitles files. 
 
 ```{r yt_trim}
 yt_trim(
   subtitles_df = trim_community_df,
-  simulate = TRUE
+  simulate = TRUE # if you want to actually run the trimming, set to FALSE (the default)
 )
 ```
+
+### Get more information about the clip
+
+`yt-dlp` can retrieve a json file with a lot of metadata about the video clip. 
+
+```{r yt_read_info_json}
+yt_get(
+  yt_id = trim_community_df[["yt_id"]],
+  info_json = TRUE
+) |>
+  yt_read_info_json()
+```
+
 
 
 ## License and disclaimers. 

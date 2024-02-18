@@ -113,20 +113,20 @@ yt_get(
   auto_subs = TRUE
 ) |>
   yt_read_vtt()
-#> # A tibble: 59,093 × 5
+#> # A tibble: 8,547 × 5
 #>    yt_id       sub_lang     line_id text                              start_time
 #>    <chr>       <chr>          <int> <chr>                             <chr>     
-#>  1 -0pPBAiJaYk Language: en       1 and in doing so we identified a … 00:00:07.…
-#>  2 -0pPBAiJaYk Language: en       2 and in doing so we identified a … 00:00:07.…
-#>  3 -0pPBAiJaYk Language: en       3 key                               00:00:08.…
-#>  4 -0pPBAiJaYk Language: en       4 elements firstly we were repeati… 00:00:10.…
-#>  5 -0pPBAiJaYk Language: en       5 same ggplot theme elements withi… 00:00:13.…
-#>  6 -0pPBAiJaYk Language: en       6 and across multiple different fi… 00:00:15.…
-#>  7 -0pPBAiJaYk Language: en       7 meaning we were copying code chu… 00:00:17.…
-#>  8 -0pPBAiJaYk Language: en       8 every single time we were creati… 00:00:18.…
-#>  9 -0pPBAiJaYk Language: en       9 script and new plot um important… 00:00:21.…
-#> 10 -0pPBAiJaYk Language: en      10 wasn't standard across the board… 00:00:23.…
-#> # ℹ 59,083 more rows
+#>  1 YSfwPzWM-8o Language: en       1 "foreign"                         00:00:01.…
+#>  2 YSfwPzWM-8o Language: en       2 ""                                00:00:10.…
+#>  3 YSfwPzWM-8o Language: en       3 "systems engineering principles … 00:00:13.…
+#>  4 YSfwPzWM-8o Language: en       4 "is Robin bisbrook I work at Azt… 00:00:17.…
+#>  5 YSfwPzWM-8o Language: en       5 "concurrent design facility I st… 00:00:19.…
+#>  6 YSfwPzWM-8o Language: en       6 "career in in France Guyana in 1… 00:00:24.…
+#>  7 YSfwPzWM-8o Language: en       7 "I've worked at several places a… 00:00:27.…
+#>  8 YSfwPzWM-8o Language: en       8 "the European Space Agency cente… 00:00:29.…
+#>  9 YSfwPzWM-8o Language: en       9 "Germany and the Netherlands eve… 00:00:31.…
+#> 10 YSfwPzWM-8o Language: en      10 "and I've had my own company as … 00:00:35.…
+#> # ℹ 8,537 more rows
 ```
 
 Or, yf you want to parse only subtitles that are locally available, you
@@ -190,7 +190,7 @@ community_df <- yt_filter(
   subtitles_df = positconf2023_df
 )
 community_df
-#> # A tibble: 204 × 6
+#> # A tibble: 191 × 6
 #>    yt_id       sub_lang     line_id text                        start_time link 
 #>    <chr>       <chr>          <int> <chr>                       <chr>      <chr>
 #>  1 -0pPBAiJaYk Language: en     306 team it's created a commun… 00:11:15.… http…
@@ -199,21 +199,21 @@ community_df
 #>  4 18vfcf46ozE Language: en     407 community so as our users … 00:15:44.… http…
 #>  5 18vfcf46ozE Language: en     411 community and so me now as… 00:15:53.… http…
 #>  6 18vfcf46ozE Language: en     414 appreciation for that comm… 00:16:00.… http…
-#>  7 -0pPBAiJaYk Language: en     306 team it's created a commun… 00:11:15.… http…
-#>  8 18vfcf46ozE Language: en     322 American Community survey … 00:12:39.… http…
-#>  9 18vfcf46ozE Language: en     396 is on community             00:15:22.… http…
-#> 10 18vfcf46ozE Language: en     407 community so as our users … 00:15:44.… http…
-#> # ℹ 194 more rows
+#>  7 DVQJ39_9L0U Language: en     123 community and any problems… 00:05:26.… http…
+#>  8 DVQJ39_9L0U Language: en     160 Community with individuals… 00:07:07.… http…
+#>  9 DVQJ39_9L0U Language: en     317 and Community Building the… 00:14:19.… http…
+#> 10 DVQJ39_9L0U Language: en     327 community the second organ… 00:14:46.… http…
+#> # ℹ 181 more rows
 ```
 
 Here just a random sample of examples:
 
-- <https://youtu.be/nGmhPEl2cfg?t=403>
-- <https://youtu.be/ZCEadMMY6mE?t=264>
-- <https://youtu.be/hfqjyeA_z7s?t=1088>
+- <https://youtu.be/zjPdBDyIyJ8?t=512>
+- <https://youtu.be/pK0IHGxUm9E?t=100>
 - <https://youtu.be/awTzbYXTlSc?t=141>
+- <https://youtu.be/iQY24bWRDww?t=217>
+- <https://youtu.be/dwijIhn0Cbk?t=739>
 - <https://youtu.be/EihuM4oyOvs?t=1035>
-- <https://youtu.be/OvKPTPqflKQ?t=518>
 
 ## Retrieve subtitles starting from single video urls/id
 
@@ -263,8 +263,7 @@ previously downloaded.
 ``` r
 yt_get(
   yt_id = trim_community_df[["yt_id"]],
-  video = TRUE,
-  check_previous = TRUE
+  video = TRUE
 )
 #> # A tibble: 2 × 2
 #>   yt_id       path                                                              
@@ -280,7 +279,7 @@ relevant part using `ffmpeg`. You’ll find the trimmed video clips in a
 ``` r
 yt_trim(
   subtitles_df = trim_community_df,
-  simulate = TRUE
+  simulate = TRUE # if you want to actually run the trimming, set to FALSE (the default)
 )
 #> # A tibble: 2 × 9
 #>   yt_id       start_time   path                start_time_period end_time_period
@@ -289,6 +288,26 @@ yt_trim(
 #> 2 18vfcf46ozE 00:12:39.710 … [18vfcf46ozE].mkv 12M 36.71S        12M 41.71S     
 #> # ℹ 4 more variables: start_time_string <chr>, end_time_string <chr>,
 #> #   destination_file <fs::path>, ffmpeg_command <chr>
+```
+
+### Get more information about the clip
+
+`yt-dlp` can retrieve a json file with a lot of metadata about the video
+clip.
+
+``` r
+yt_get(
+  yt_id = trim_community_df[["yt_id"]],
+  info_json = TRUE
+) |>
+  yt_read_info_json()
+#> # A tibble: 2 × 16
+#>   yt_id    title upload_date duration language description view_count categories
+#>   <chr>    <chr> <date>         <int> <chr>    <chr>            <int> <list>    
+#> 1 -0pPBAi… Addi… 2023-12-15       867 en       "Presented…        245 <chr [1]> 
+#> 2 18vfcf4… Beco… 2023-12-15      1108 en       "Presented…        296 <chr [1]> 
+#> # ℹ 8 more variables: tags <list>, subtitles <list>, automatic_captions <list>,
+#> #   ext <chr>, width <int>, height <int>, epoch <int>, retrieved_at <dttm>
 ```
 
 ## License and disclaimers.

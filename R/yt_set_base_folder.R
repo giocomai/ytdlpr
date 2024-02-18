@@ -47,5 +47,5 @@ yt_get_base_folder <- function(path = NULL) {
     fs::dir_create(yt_base_folder)
     cli::cli_inform("Base folder created: {.path {yt_base_folder}}")
   }
-  invisible(yt_base_folder)
+  yt_base_folder
 }
