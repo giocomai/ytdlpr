@@ -10,14 +10,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' yt_get_local_id()
+#' yt_get_local()
 #'
-#' yt_get_local_id(
+#' yt_get_local(
 #'   yt_id = "WXPBOfRtXQE",
 #'   file_extension = "webm"
 #' )
 #' }
-yt_get_local_id <- function(yt_id = NULL,
+yt_get_local <- function(yt_id = NULL,
                             playlist = NULL,
                             file_extension = NULL,
                             yt_base_folder = NULL) {

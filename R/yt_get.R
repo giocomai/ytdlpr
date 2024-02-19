@@ -116,28 +116,28 @@ yt_get <- function(yt_id = NULL,
           .data[["sub_lang"]] %in% !!sub_lang
         )
     } else if (video) {
-      previous_df <- yt_get_local_id(
+      previous_df <- yt_get_local(
         file_extension = "webm|mp4|mkv",
         yt_id = yt_id,
         playlist = playlist,
         yt_base_folder = yt_base_folder
       )
     } else if (info_json) {
-      previous_df <- yt_get_local_id(
+      previous_df <- yt_get_local(
         file_extension = "info\\.json",
         yt_id = yt_id,
         playlist = playlist,
         yt_base_folder = yt_base_folder
       )
     } else if (description) {
-      previous_df <- yt_get_local_id(
+      previous_df <- yt_get_local(
         file_extension = "description",
         yt_id = yt_id,
         playlist = playlist,
         yt_base_folder = yt_base_folder
       )
     } else {
-      previous_df <- yt_get_local_id(
+      previous_df <- yt_get_local(
         yt_id = yt_id,
         playlist = playlist,
         yt_base_folder = yt_base_folder
@@ -225,7 +225,7 @@ yt_get <- function(yt_id = NULL,
     ) |>
       dplyr::filter(sub_lang %in% sub_lang)
   } else {
-    yt_get_local_id(
+    yt_get_local(
       yt_id = yt_id,
       playlist = playlist,
       yt_base_folder = yt_base_folder

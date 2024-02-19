@@ -47,7 +47,7 @@ yt_trim <- function(subtitles_df,
                     yt_base_folder = NULL) {
   yt_id_v <- unique(subtitles_df[["yt_id"]])
 
-  local_video_path <- yt_get_local_id(
+  local_video_path <- yt_get_local(
     yt_id = yt_id_v,
     file_extension = video_file_extension,
     yt_base_folder = yt_base_folder
