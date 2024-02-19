@@ -310,6 +310,26 @@ yt_get(
 #> #   ext <chr>, width <int>, height <int>, epoch <int>, retrieved_at <dttm>
 ```
 
+### Trim video and add information as text overlay
+
+So, if we want to run it all at once:
+
+``` r
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  auto_subs = TRUE
+) |> # download subtitles
+  yt_read_vtt() |> # read them
+  yt_filter(pattern = "rover") |> # keep only those with "rover" in the text
+  dplyr::slice_sample(n = 2) |> # keep two, as this is only an example
+  yt_trim_with_text(only_local = FALSE) # download video files and json files and trim video
+```
+
+This would download subtitles files, filter them in order to keep only
+those lines where a given word is used, retrieve metadata and video
+files, and then combine them to export a video file with a text overlay
+in the base folder.
+
 ## License and disclaimers.
 
 This package is released with a MIT license. Much of what it does

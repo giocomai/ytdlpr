@@ -1,7 +1,7 @@
 #' Filter subtitles and link back the original source
 #'
 #' @param subtitles_df Defaults to NULL. If given must be a data frame,
-#'   typically generated with `yt_get_local_subtitles()`.
+#'   typically generated with `yt_get_local_subtitles() |> yt_read_vtt()`.
 #' @param pattern A character string.
 #' @param ignore_case Defaults to TRUE.
 #' @param regex Defaults to TRUE.

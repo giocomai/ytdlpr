@@ -224,6 +224,20 @@ yt_get <- function(yt_id = NULL,
       yt_base_folder = yt_base_folder
     ) |>
       dplyr::filter(sub_lang %in% sub_lang)
+  } else if (video) {
+    previous_df <- yt_get_local(
+      file_extension = "webm|mp4|mkv",
+      yt_id = yt_id,
+      playlist = playlist,
+      yt_base_folder = yt_base_folder
+    )
+  } else if (info_json) {
+    previous_df <- yt_get_local(
+      file_extension = "info\\.json",
+      yt_id = yt_id,
+      playlist = playlist,
+      yt_base_folder = yt_base_folder
+    )
   } else {
     yt_get_local(
       yt_id = yt_id,

@@ -6,6 +6,7 @@
 \usage{
 yt_trim(
   subtitles_df,
+  only_local = TRUE,
   lag = -3,
   duration = 5,
   check_previous = TRUE,
@@ -19,6 +20,8 @@ yt_trim(
 \arguments{
 \item{subtitles_df}{A data frame with subtitles, typically generated with a
 combination of \code{\link[=yt_read_vtt]{yt_read_vtt()}} and \code{\link[=yt_filter]{yt_filter()}}. See examples.}
+
+\item{only_local}{Defaults to TRUE. If FALSE, downloads missing video files.}
 
 \item{lag}{Defaults to \code{-3}. Refers to the number of seconds before or after
 the start time as recorded in the subtitles. Minus three or four seems to

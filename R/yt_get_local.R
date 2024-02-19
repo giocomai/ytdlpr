@@ -18,9 +18,9 @@
 #' )
 #' }
 yt_get_local <- function(yt_id = NULL,
-                            playlist = NULL,
-                            file_extension = NULL,
-                            yt_base_folder = NULL) {
+                         playlist = NULL,
+                         file_extension = NULL,
+                         yt_base_folder = NULL) {
   if (is.null(playlist) == FALSE) {
     folder_path <- yt_get_playlist_folder(
       playlist = playlist,

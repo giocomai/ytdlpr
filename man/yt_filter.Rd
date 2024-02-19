@@ -18,7 +18,7 @@ yt_filter(
 }
 \arguments{
 \item{subtitles_df}{Defaults to NULL. If given must be a data frame,
-typically generated with \code{yt_get_local_subtitles()}.}
+typically generated with \code{yt_get_local_subtitles() |> yt_read_vtt()}.}
 
 \item{pattern}{A character string.}
 

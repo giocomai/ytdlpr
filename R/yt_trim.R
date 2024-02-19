@@ -2,6 +2,7 @@
 #'
 #' @param subtitles_df A data frame with subtitles, typically generated with a
 #'   combination of [yt_read_vtt()] and [yt_filter()]. See examples.
+#' @param only_local Defaults to TRUE. If FALSE, downloads missing video files.
 #' @param destination_folder Defaults to `0_trimmed_video`: trimmed video files
 #'   will be stored inside a folder called `0_trimmed_video` inside your base
 #'   folder as defined by `yt_base_folder` or options. If you want an absolute
@@ -37,6 +38,7 @@
 #' yt_trim(filtered_subs_df)
 #' }
 yt_trim <- function(subtitles_df,
+                    only_local = TRUE,
                     lag = -3,
                     duration = 5,
                     check_previous = TRUE,
@@ -47,11 +49,20 @@ yt_trim <- function(subtitles_df,
                     yt_base_folder = NULL) {
   yt_id_v <- unique(subtitles_df[["yt_id"]])
 
-  local_video_path <- yt_get_local(
-    yt_id = yt_id_v,
-    file_extension = video_file_extension,
-    yt_base_folder = yt_base_folder
-  )
+  if (only_local) {
+    local_video_path <- yt_get_local(
+      yt_id = yt_id_v,
+      file_extension = video_file_extension,
+      yt_base_folder = yt_base_folder
+    )
+  } else {
+    local_video_path <- yt_get(
+      yt_id = yt_id_v,
+      video = TRUE,
+      yt_base_folder = yt_base_folder
+    )
+  }
+
 
   if (is.null(destination_path)) {
     destination_path <- fs::dir_create(
