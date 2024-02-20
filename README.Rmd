@@ -220,4 +220,4 @@ This would download subtitles files, filter them in order to keep only those lin
 
 ## License and disclaimers. 
 
-This package is released with a MIT license. Much of what it does requires external pacakges (in particular, [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/): see their repositories for further license details and disclaimers.
+This package is released with a MIT license. Much of what it does requires external pacakges, in particular, [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/): see their repositories for further license details and disclaimers.

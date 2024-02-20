@@ -60,6 +60,8 @@ yt_trim_with_text <- function(subtitles_df,
           cli::cli_warn("Info json for video with id {.val {current[['yt_id']]}} missing, skipping.")
           return(invisible(NULL))
         }
+        current_json_df <- local_json_df |>
+          yt_read_info_json()
       } else {
         current_json_df <- yt_get(
           yt_id = current[["yt_id"]],

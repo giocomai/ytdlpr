@@ -333,7 +333,7 @@ in the base folder.
 ## License and disclaimers.
 
 This package is released with a MIT license. Much of what it does
-requires external pacakges (in particular,
+requires external pacakges, in particular,
 [yt-dlp](https://github.com/yt-dlp/yt-dlp) and
 [ffmpeg](https://ffmpeg.org/): see their repositories for further
 license details and disclaimers.
