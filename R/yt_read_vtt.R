@@ -7,8 +7,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' yt_get_subtitles_playlist(
-#'   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+#' yt_get(
+#'   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+#'   auto_subs = TRUE
 #' ) |>
 #'   yt_read_vtt()
 #' }
