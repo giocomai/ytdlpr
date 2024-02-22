@@ -32,7 +32,7 @@ yt_read_vtt <- function(path) {
       )
 
       current_sub_lang <- input_text[[3]] |>
-        stringr::str_remove("sub_lang: ")
+        stringr::str_remove("Language: ")
 
       current_title <- current_path |>
         fs::path_file() |>
