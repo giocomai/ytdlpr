@@ -39,32 +39,32 @@ yt_get_local_subtitles <- function(yt_id = NULL,
 
   subtitles_df <- tibble::tibble(path = all_subs_v) |>
     dplyr::mutate(metadata = stringr::str_extract(
-      string = path,
+      string = .data[["path"]],
       pattern = "\\[[[:print:]]+$"
     )) |>
-    dplyr::mutate(title = fs::path_file(path) |>
-      stringr::str_remove(stringr::fixed(metadata)) |>
+    dplyr::mutate(title = fs::path_file(.data[["path"]]) |>
+      stringr::str_remove(stringr::fixed(.data[["metadata"]])) |>
       stringr::str_trim()) |>
-    dplyr::mutate(metadata = metadata |>
+    dplyr::mutate(metadata = .data[["metadata"]] |>
       stringr::str_remove(stringr::fixed(stringr::str_c(".", sub_format, collapse = "")))) |>
     dplyr::mutate(
-      sub_lang = metadata |>
+      sub_lang = .data[["metadata"]] |>
         stringr::str_extract(pattern = "[[:alpha:]]{2}$"),
-      yt_id = metadata |>
+      yt_id = .data[["metadata"]] |>
         stringr::str_extract(pattern = "(?<=\\[)[[:print:]]{11}"),
-      playlist = path |>
+      playlist = .data[["path"]] |>
         fs::path_dir() |>
         stringr::str_remove(subtitles_folder) |>
         stringr::str_remove(pattern = stringr::fixed("/")),
       sub_format = sub_format
     ) |>
     dplyr::select(
-      yt_id,
-      sub_lang,
-      sub_format,
-      title,
-      playlist,
-      path
+      "yt_id",
+      "sub_lang",
+      "sub_format",
+      "title",
+      "playlist",
+      "path"
     )
 
   if (is.null(sub_lang) == FALSE) {
