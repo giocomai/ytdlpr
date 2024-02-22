@@ -85,7 +85,7 @@ yt_trim <- function(subtitles_df,
     ) |>
       lubridate::seconds_to_period()) |>
     dplyr::mutate(end_time_period = sum(
-      start_time_period |>
+      .data[["start_time_period"]] |>
         lubridate::period_to_seconds(),
       duration
     ) |>
@@ -93,9 +93,9 @@ yt_trim <- function(subtitles_df,
     dplyr::mutate(
       start_time_string = stringr::str_c(
         stringr::str_c(
-          stringr::str_pad(string = lubridate::hour(start_time_period), width = 2, side = "left", pad = 0),
-          stringr::str_pad(string = lubridate::minute(start_time_period), width = 2, side = "left", pad = 0),
-          stringr::str_pad(string = lubridate::second(start_time_period), width = 2, side = "left", pad = 0) |>
+          stringr::str_pad(string = lubridate::hour(.data[["start_time_period"]]), width = 2, side = "left", pad = 0),
+          stringr::str_pad(string = lubridate::minute(.data[["start_time_period"]]), width = 2, side = "left", pad = 0),
+          stringr::str_pad(string = lubridate::second(.data[["start_time_period"]]), width = 2, side = "left", pad = 0) |>
             (\(.) dplyr::if_else(condition = stringr::str_detect(string = ., pattern = stringr::fixed(".")),
               false = .,
               true = stringr::str_pad(string = ., width = 6, side = "right", pad = "0")
@@ -105,9 +105,9 @@ yt_trim <- function(subtitles_df,
       ),
       end_time_string = stringr::str_c(
         stringr::str_c(
-          stringr::str_pad(string = lubridate::hour(end_time_period), width = 2, side = "left", pad = 0),
-          stringr::str_pad(string = lubridate::minute(end_time_period), width = 2, side = "left", pad = 0),
-          stringr::str_pad(string = lubridate::second(end_time_period), width = 2, side = "left", pad = 0) |>
+          stringr::str_pad(string = lubridate::hour(.data[["end_time_period"]]), width = 2, side = "left", pad = 0),
+          stringr::str_pad(string = lubridate::minute(.data[["end_time_period"]]), width = 2, side = "left", pad = 0),
+          stringr::str_pad(string = lubridate::second(.data[["end_time_period"]]), width = 2, side = "left", pad = 0) |>
             (\(.) dplyr::if_else(condition = stringr::str_detect(string = ., pattern = stringr::fixed(".")),
               false = .,
               true = stringr::str_pad(string = ., width = 6, side = "right", pad = "0")
@@ -136,7 +136,7 @@ yt_trim <- function(subtitles_df,
       .data[["end_time_string"]],
       " ",
       # "-c copy ",
-      shQuote(destination_file)
+      shQuote(.data[["destination_file"]])
     )) |>
     dplyr::ungroup() |>
     dplyr::distinct()

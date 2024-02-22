@@ -42,8 +42,6 @@ yt_read_vtt <- function(path) {
         stringr::str_extract(pattern = "\\[.*$") |>
         stringr::str_remove("\\[")
 
-      # current_title <-
-
       tibble::tibble(vtt = input_text) |>
         dplyr::filter(.data[["vtt"]] != "" & .data[["vtt"]] != " ") |>
         dplyr::mutate(timestamp = stringr::str_extract(
@@ -59,38 +57,41 @@ yt_read_vtt <- function(path) {
           )
         )) |>
         dplyr::mutate(
-          line_id = as.numeric(is.na(.data[["timestamp"]]) == FALSE & !is.na(lag(.data[["timestamp"]])))
+          line_id = as.numeric(is.na(.data[["timestamp"]]) == FALSE & !is.na(stats::lag(.data[["timestamp"]])))
         ) |>
-        dplyr::mutate(line_id = cumsum(line_id)) |>
-        dplyr::mutate(drop = stringr::str_detect(
-          string = .data[["vtt"]],
-          pattern = stringr::fixed("><c>")
-        )) |>
-        dplyr::group_by(line_id) |>
-        dplyr::mutate(keep = sum(drop) == 0) |>
+        dplyr::mutate(line_id = cumsum(.data[["line_id"]])) |>
+        dplyr::mutate(
+          drop = stringr::str_detect(
+            string = .data[["vtt"]],
+            pattern = stringr::fixed("><c>")
+          )
+        ) |>
+        dplyr::group_by(.data[["line_id"]]) |>
+        dplyr::mutate(keep = sum(.data[["drop"]]) == 0) |>
         dplyr::filter(.data[["keep"]]) |>
-        dplyr::filter(line_id > 0) |>
-        dplyr::mutate(text = dplyr::if_else(condition = is.na(timestamp),
-          true = vtt,
-          false = ""
-        )) |>
+        dplyr::filter(.data[["line_id"]] > 0) |>
+        dplyr::mutate(
+          text = dplyr::if_else(condition = is.na(.data[["timestamp"]]),
+            true = .data[["vtt"]],
+            false = ""
+          )
+        ) |>
         dplyr::summarise(
           text = stringr::str_c(.data[["text"]],
             collapse = " "
           ) |>
             stringr::str_squish(),
           start_time = stringr::str_extract(
-            string = timestamp[is.na(timestamp) == FALSE],
+            string = .data[["timestamp"]][is.na(.data[["timestamp"]]) == FALSE],
             pattern = "[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}"
           ),
         ) |>
         dplyr::mutate(line_id = dplyr::row_number()) |>
         dplyr::mutate(
           yt_id = current_id,
-          #  title = current_title,
           sub_lang = current_sub_lang
         ) |>
-        dplyr::relocate(yt_id, sub_lang)
+        dplyr::relocate("yt_id", "sub_lang")
     }
   ) |>
     purrr::list_rbind()

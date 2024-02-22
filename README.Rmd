@@ -18,6 +18,7 @@ set.seed(7)
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+![runiverse](https://giocomai.r-universe.dev/badges/ytdlpr)
 <!-- badges: end -->
 
 `ytdlpr` wraps some functionalities of `yt-dlp` to facilitate their use in R-based workflows. It is currently focused on retrieving and parsing subtitles, but can also download the video files, and trim them in order to include only the part of the video clip where a given subtitle line has been spoken.
@@ -30,6 +31,12 @@ You can install the development version of `ytdlpr` from [GitHub](https://github
 
 ``` r
 remotes::install_github("giocomai/ytdlpr")
+```
+
+or from R universe with:
+
+``` r
+install.packages('ytdlpr', repos = c('https://giocomai.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 ## Documentation 

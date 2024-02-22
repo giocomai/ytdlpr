@@ -27,7 +27,7 @@
 #'   yt_filter(pattern = "rover") |> # keep only those with "rover" in the text
 #'   dplyr::slice_sample(n = 2) |> # keep two, as this is only an example
 #'   yt_trim_with_text(only_local = FALSE) # download video files and json files and trim video
-#'  }
+#' }
 yt_trim_with_text <- function(subtitles_df,
                               only_local = TRUE,
                               font = "Mono",
