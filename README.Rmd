@@ -225,6 +225,18 @@ yt_get(
 
 This would download subtitles files, filter them in order to keep only those lines where a given word is used, retrieve metadata and video files, and then combine them to export a video file with a text overlay in the base folder. 
 
+## Additional convenience functions and checks
+
+What if I want to check which video files do have available captions in a given language? If they are not available, one may end up needlessly try to download subtitles that effectively do not exist, perhaps because a given clip has no spoken audio.
+
+```{r yt_get_available_subtitles}
+yt_get_available_subtitles(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
+  )
+```
+
+
+
 ## License and disclaimers. 
 
 This package is released with a MIT license. Much of what it does requires external pacakges, in particular, [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/): see their repositories for further license details and disclaimers.

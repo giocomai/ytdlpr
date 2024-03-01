@@ -1,6 +1,6 @@
 Package: ytdlpr
 Title: R wrapper for yt-dlp, focused on extracting and processing subtitles 
-Version: 0.0.1.9001
+Version: 0.0.1.9002
 Authors@R: 
     c(person(given = "Giorgio",
              family = "Comai",

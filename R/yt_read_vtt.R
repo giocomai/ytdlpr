@@ -92,7 +92,8 @@ yt_read_vtt <- function(path) {
           yt_id = current_id,
           sub_lang = current_sub_lang
         ) |>
-        dplyr::relocate("yt_id", "sub_lang")
+        dplyr::relocate("yt_id", "sub_lang") |>
+        dplyr::ungroup()
     }
   ) |>
     purrr::list_rbind()

@@ -3,6 +3,7 @@
 export(yt_extract_id)
 export(yt_filter)
 export(yt_get)
+export(yt_get_available_subtitles)
 export(yt_get_base_folder)
 export(yt_get_local)
 export(yt_get_local_subtitles)
