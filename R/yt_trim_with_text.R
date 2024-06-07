@@ -123,4 +123,6 @@ yt_trim_with_text <- function(subtitles_df,
       system(command = ffmpeg_command)
     }
   )
+
+  invisible(trim_df)
 }

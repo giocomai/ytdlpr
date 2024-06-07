@@ -337,6 +337,22 @@ those lines where a given word is used, retrieve metadata and video
 files, and then combine them to export a video file with a text overlay
 in the base folder.
 
+But what if we want to concatatenate all relevant segments in a single
+video clip? Just add `yt_concatenate()` and you’ll find all the trimmed
+video clips merged in a single file.
+
+``` r
+yt_get(
+  playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P",
+  auto_subs = TRUE
+) |> # download subtitles
+  yt_read_vtt() |> # read them
+  yt_filter(pattern = "rover") |> # keep only those with "rover" in the text
+  dplyr::slice_sample(n = 2) |> # keep two, as this is only an example
+  yt_trim_with_text(only_local = FALSE) |> # download video files and json files and trim video
+  yt_concatenate() # concatenate all trimed video clips in a single file
+```
+
 ## Additional convenience functions and checks
 
 What if I want to check which video files do have available captions in
@@ -347,7 +363,7 @@ a given clip has no spoken audio.
 ``` r
 yt_get_available_subtitles(
   playlist = "https://www.youtube.com/playlist?list=PLbyvawxScNbuSi7sJaJbHNyyx3iYJeW3P"
-  )
+)
 #> # A tibble: 7 × 3
 #>   yt_id       sub_lang sub_type          
 #>   <chr>       <chr>    <chr>             
