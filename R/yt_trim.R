@@ -71,7 +71,7 @@ yt_trim <- function(subtitles_df,
     )
   }
 
-  convert_df <- subtitles_df |>
+  all_df <- subtitles_df |>
     dplyr::select("yt_id", "start_time") |>
     dplyr::left_join(
       y = local_video_path,
@@ -144,13 +144,15 @@ yt_trim <- function(subtitles_df,
     dplyr::ungroup() |>
     dplyr::distinct()
 
-  if (check_previous) {
-    convert_df <- convert_df |>
-      dplyr::filter(!fs::file_exists(path = .data[["destination_file"]]))
+  if (simulate) {
+    return(all_df)
   }
 
-  if (simulate) {
-    return(convert_df)
+  if (check_previous) {
+    convert_df <- all_df |>
+      dplyr::filter(!fs::file_exists(path = .data[["destination_file"]]))
+  } else {
+    convert_df <- all_df
   }
 
   purrr::walk(
@@ -162,5 +164,5 @@ yt_trim <- function(subtitles_df,
 
   cli::cli_alert_success("Trimmed video files stored in {.path {destination_path}}")
 
-  convert_df
+  all_df
 }

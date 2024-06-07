@@ -29,6 +29,7 @@
 #'   yt_trim_with_text(only_local = FALSE) # download video files and json files and trim video
 #' }
 yt_trim_with_text <- function(subtitles_df,
+                              check_previous = TRUE,
                               only_local = TRUE,
                               font = "Mono",
                               fontcolor = "white",
@@ -49,9 +50,16 @@ yt_trim_with_text <- function(subtitles_df,
     ...
   )
 
+  if (check_previous) {
+    convert_df <- trim_df |>
+      dplyr::filter(!fs::file_exists(path = .data[["destination_file"]]))
+  } else {
+    convert_df <- trim_df
+  }
+
   purrr::walk(
     .progress = TRUE,
-    .x = purrr::transpose(trim_df),
+    .x = purrr::transpose(convert_df),
     .f = function(current) {
       if (only_local) {
         local_json_df <- yt_get_local(
