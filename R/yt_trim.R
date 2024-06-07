@@ -78,10 +78,13 @@ yt_trim <- function(subtitles_df,
       by = "yt_id"
     ) |>
     dplyr::rowwise() |>
-    dplyr::mutate(start_time_period = sum(
-      lubridate::hms(.data[["start_time"]]) |>
-        lubridate::period_to_seconds(),
-      lag
+    dplyr::mutate(start_time_period = max(
+      sum(
+        lubridate::hms(.data[["start_time"]]) |>
+          lubridate::period_to_seconds(),
+        lag
+      ),
+      0
     ) |>
       lubridate::seconds_to_period()) |>
     dplyr::mutate(end_time_period = sum(
