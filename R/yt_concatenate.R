@@ -30,7 +30,8 @@ yt_concatenate <- function(trimmed_df,
     if (is.null(info_df)) {
       info_df <- yt_read_info_json(yt_get(
         yt_id = unique(trimmed_df[["yt_id"]]),
-        info_json = TRUE
+        info_json = TRUE,
+        yt_base_folder = yt_base_folder
       ))
     }
 
