@@ -66,7 +66,7 @@ yt_concatenate <- function(trimmed_df,
       mp4_file
     )
   )
-  cli::cli_alert_success(message = "Video clip generated: {.path {mp4_file}}")
+  cli::cli_alert_success(text = "Video clip generated: {.path {mp4_file}}")
 
   invisible(mp4_file)
 }

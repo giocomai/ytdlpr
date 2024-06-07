@@ -162,7 +162,7 @@ yt_trim <- function(subtitles_df,
     }
   )
 
-  cli::cli_alert_success("Trimmed video files stored in {.path {destination_path}}")
+  cli::cli_alert_success(text = "Trimmed video files stored in {.path {destination_path}}")
 
   all_df
 }
