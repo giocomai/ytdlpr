@@ -21,6 +21,7 @@ yt_get(
   max_sleep_interval = 8,
   sleep_subtitles = 2,
   custom_options = "",
+  custom_binary = NULL,
   yt_base_folder = NULL
 )
 }
@@ -74,6 +75,8 @@ download"}
 \item{custom_options}{Defaults to an empty string. If given, it should
 correspond to parameters exactly as they would be used on command line. For
 a full list, see the \href{https://github.com/yt-dlp/yt-dlp}{original documentation}.}
+
+\item{custom_binary}{Defaults to NULL. If given, path to executable \code{yt-dlp}.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}

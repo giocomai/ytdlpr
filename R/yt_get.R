@@ -42,6 +42,7 @@
 #'   correspond to parameters exactly as they would be used on command line. For
 #'   a full list, see the [original
 #'   documentation](https://github.com/yt-dlp/yt-dlp).
+#' @param custom_binary Defaults to NULL. If given, path to executable `yt-dlp`.
 #' @inheritParams yt_get_playlist_folder
 #'
 #' @return A data frame, with details about locally available subtitles.
@@ -61,23 +62,26 @@
 #'   info_json = TRUE
 #' )
 #' }
-yt_get <- function(yt_id = NULL,
-                   playlist = NULL,
-                   check_previous = TRUE,
-                   sub_lang = "en",
-                   sub_format = "vtt",
-                   subs = FALSE,
-                   auto_subs = FALSE,
-                   video = FALSE,
-                   description = FALSE,
-                   info_json = FALSE,
-                   comments = FALSE,
-                   thumbnail = FALSE,
-                   min_sleep_interval = 1,
-                   max_sleep_interval = 8,
-                   sleep_subtitles = 2,
-                   custom_options = "",
-                   yt_base_folder = NULL) {
+yt_get <- function(
+  yt_id = NULL,
+  playlist = NULL,
+  check_previous = TRUE,
+  sub_lang = "en",
+  sub_format = "vtt",
+  subs = FALSE,
+  auto_subs = FALSE,
+  video = FALSE,
+  description = FALSE,
+  info_json = FALSE,
+  comments = FALSE,
+  thumbnail = FALSE,
+  min_sleep_interval = 1,
+  max_sleep_interval = 8,
+  sleep_subtitles = 2,
+  custom_options = "",
+  custom_binary = NULL,
+  yt_base_folder = NULL
+) {
   if (is.null(yt_id) & is.null(playlist)) {
     cli::cli_abort("Either `yt_id` or `playlist` must be given.")
   }
@@ -101,7 +105,10 @@ yt_get <- function(yt_id = NULL,
     if (is.null(playlist) == FALSE) {
       playlist_df <- yt_get_playlist_id(playlist = playlist)
     } else {
-      archive_file <- fs::path(yt_get_base_folder(path = yt_base_folder), "archive.txt")
+      archive_file <- fs::path(
+        yt_get_base_folder(path = yt_base_folder),
+        "archive.txt"
+      )
       playlist_df <- tibble::tibble(yt_id = yt_extract_id(yt_id))
     }
 
@@ -169,35 +176,69 @@ yt_get <- function(yt_id = NULL,
   yt_command_params <- custom_options
 
   if (subs) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-subs", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-subs",
+      sep = " "
+    )
   }
 
   if (video == FALSE) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--skip-download", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--skip-download",
+      sep = " "
+    )
   }
 
   if (description) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-description", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-description",
+      sep = " "
+    )
   }
 
   if (comments) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-comments", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-comments",
+      sep = " "
+    )
   }
 
   if (thumbnail) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-thumbnail  ", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-thumbnail  ",
+      sep = " "
+    )
   }
 
   if (auto_subs) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-auto-sub", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-auto-sub",
+      sep = " "
+    )
   }
 
   if (info_json) {
-    yt_command_params <- stringr::str_c(yt_command_params, "--write-info-json ", sep = " ")
+    yt_command_params <- stringr::str_c(
+      yt_command_params,
+      "--write-info-json ",
+      sep = " "
+    )
+  }
+
+  if (is.null(custom_binary)) {
+    binary_command <- "yt-dlp"
+  } else {
+    binary_command <- custom_binary
   }
 
   yt_command <- stringr::str_c(
-    "yt-dlp",
+    binary_command,
     yt_command_params,
     "--paths",
     shQuote(playlist_folder),
