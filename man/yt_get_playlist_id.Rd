@@ -4,7 +4,12 @@
 \alias{yt_get_playlist_id}
 \title{Get all Youtube identifiers for a given playlist}
 \usage{
-yt_get_playlist_id(playlist, update = FALSE, yt_base_folder = NULL)
+yt_get_playlist_id(
+  playlist,
+  update = FALSE,
+  flat_playlist = TRUE,
+  yt_base_folder = NULL
+)
 }
 \arguments{
 \item{playlist}{The full url of a Youtube playlist.}
@@ -12,6 +17,10 @@ yt_get_playlist_id(playlist, update = FALSE, yt_base_folder = NULL)
 \item{update}{Defaults to FALSE. If FALSE, data is returned immediately if
 previously stored. If TRUE, it checks again the playlist on Youtube to see
 if new content has been added.}
+
+\item{flat_playlist}{Defaults to TRUE. If TRUE, retrieves id of video clips
+in playlists much more quickly. Set to FALSE for the slower approach which
+relies on \code{--download-archive}.}
 
 \item{yt_base_folder}{Base folder, defaults to NULL. Can be set with
 \code{\link[=yt_set_base_folder]{yt_set_base_folder()}}}

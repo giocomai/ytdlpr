@@ -6,6 +6,7 @@
 \usage{
 yt_trim_with_text(
   subtitles_df,
+  check_previous = TRUE,
   only_local = TRUE,
   font = "Mono",
   fontcolor = "white",
@@ -23,6 +24,10 @@ yt_trim_with_text(
 \arguments{
 \item{subtitles_df}{A data frame with subtitles, typically generated with a
 combination of \code{\link[=yt_read_vtt]{yt_read_vtt()}} and \code{\link[=yt_filter]{yt_filter()}}. See examples.}
+
+\item{check_previous}{Defaults to TRUE. If a file with the same id, same
+starting time, and same duration has already been stored in the destination
+folder, skip it.}
 
 \item{only_local}{Defaults to TRUE. If FALSE, downloads missing video files.}
 
