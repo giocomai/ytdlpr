@@ -17,9 +17,10 @@ yt_get(
   info_json = FALSE,
   comments = FALSE,
   thumbnail = FALSE,
-  min_sleep_interval = 1,
-  max_sleep_interval = 8,
-  sleep_subtitles = 2,
+  min_sleep_interval = 2,
+  max_sleep_interval = 16,
+  sleep_requests = 1,
+  sleep_subtitles = 8,
   custom_options = "",
   custom_binary = NULL,
   yt_base_folder = NULL
@@ -35,7 +36,7 @@ vector, but if a data frame is given, \code{yt_id} column is taken as input
 \item{check_previous}{Defaults to TRUE. If FALSE, input is always downloaded.
 If TRUE, and \code{subs} is TRUE, it checks that the requested language is
 locally available. If subtitles is set to FALSE, and only one of the write
-options is enabled, it checks for the local availabilty of relevant files.
+options is enabled, it checks for the local availability of relevant files.
 For some options, the presence of \emph{any} local file associated with a given
 id prevents further downloads associated with it.}
 
