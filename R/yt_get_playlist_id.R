@@ -1,4 +1,4 @@
-#' Get all Youtube identifiers for a given playlist
+#' Get all YouTube identifiers for a given playlist
 #'
 #' @param playlist The full url of a Youtube playlist.
 #' @param update Defaults to FALSE. If FALSE, data is returned immediately if

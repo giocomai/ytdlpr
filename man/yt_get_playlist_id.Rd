@@ -2,7 +2,7 @@
 % Please edit documentation in R/yt_get_playlist_id.R
 \name{yt_get_playlist_id}
 \alias{yt_get_playlist_id}
-\title{Get all Youtube identifiers for a given playlist}
+\title{Get all YouTube identifiers for a given playlist}
 \usage{
 yt_get_playlist_id(
   playlist,
@@ -29,7 +29,7 @@ relies on \code{--download-archive}.}
 A data frame (a tibble) with a single column named \code{yt_id}.
 }
 \description{
-Get all Youtube identifiers for a given playlist
+Get all YouTube identifiers for a given playlist
 }
 \examples{
 \dontrun{

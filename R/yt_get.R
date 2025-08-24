@@ -17,7 +17,7 @@
 #' @param check_previous Defaults to TRUE. If FALSE, input is always downloaded.
 #'   If TRUE, and `subs` is TRUE, it checks that the requested language is
 #'   locally available. If subtitles is set to FALSE, and only one of the write
-#'   options is enabled, it checks for the local availabilty of relevant files.
+#'   options is enabled, it checks for the local availability of relevant files.
 #'   For some options, the presence of *any* local file associated with a given
 #'   id prevents further downloads associated with it.
 #' @param sub_lang Defaults to "en". If more than one, can be given as comma
