@@ -22,7 +22,7 @@ yt_get_local_subtitles <- function(
   sub_format = "vtt",
   yt_base_folder = NULL
 ) {
-  if (is.null(playlist) == FALSE) {
+  if (!is.null(playlist)) {
     subtitles_folder <- yt_get_playlist_folder(
       playlist = playlist,
       yt_base_folder = yt_base_folder
@@ -30,6 +30,8 @@ yt_get_local_subtitles <- function(
   } else {
     subtitles_folder <- yt_get_base_folder(path = yt_base_folder)
   }
+
+  base_folder <- yt_get_base_folder(path = yt_base_folder)
 
   all_subs_v <- fs::dir_ls(
     path = subtitles_folder,
@@ -66,8 +68,8 @@ yt_get_local_subtitles <- function(
       yt_id = .data[["metadata"]] |>
         stringr::str_extract(pattern = "(?<=\\[)[[:print:]]{11}"),
       playlist = .data[["path"]] |>
+        stringr::str_remove(base_folder) |>
         fs::path_dir() |>
-        stringr::str_remove(subtitles_folder) |>
         stringr::str_remove(pattern = stringr::fixed("/")),
       sub_format = sub_format
     ) |>
