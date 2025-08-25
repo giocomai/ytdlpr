@@ -103,8 +103,13 @@ yt_get <- function(
   archive_file <- fs::path(playlist_folder, "archive.txt")
 
   if (check_previous) {
-    if (is.null(playlist) == FALSE) {
+    if (!is.null(playlist)) {
       playlist_df <- yt_get_playlist_id(playlist = playlist)
+
+      if (!is.null(yt_id)) {
+        playlist_df <- playlist_df |>
+          dplyr::filter(.data[["yt_id"]] %in% .env[["yt_id"]])
+      }
     } else {
       archive_file <- fs::path(
         yt_get_base_folder(path = yt_base_folder),
