@@ -15,11 +15,13 @@
 #' \dontrun{
 #' yt_get_local_subtitles()
 #' }
-yt_get_local_subtitles <- function(yt_id = NULL,
-                                   playlist = NULL,
-                                   sub_lang = NULL,
-                                   sub_format = "vtt",
-                                   yt_base_folder = NULL) {
+yt_get_local_subtitles <- function(
+  yt_id = NULL,
+  playlist = NULL,
+  sub_lang = NULL,
+  sub_format = "vtt",
+  yt_base_folder = NULL
+) {
   if (is.null(playlist) == FALSE) {
     subtitles_folder <- yt_get_playlist_folder(
       playlist = playlist,
@@ -38,18 +40,29 @@ yt_get_local_subtitles <- function(yt_id = NULL,
   )
 
   subtitles_df <- tibble::tibble(path = all_subs_v) |>
-    dplyr::mutate(metadata = stringr::str_extract(
-      string = .data[["path"]],
-      pattern = "\\[[[:print:]]+$"
-    )) |>
-    dplyr::mutate(title = fs::path_file(.data[["path"]]) |>
-      stringr::str_remove(stringr::fixed(.data[["metadata"]])) |>
-      stringr::str_trim()) |>
-    dplyr::mutate(metadata = .data[["metadata"]] |>
-      stringr::str_remove(stringr::fixed(stringr::str_c(".", sub_format, collapse = "")))) |>
+    dplyr::mutate(
+      metadata = stringr::str_extract(
+        string = .data[["path"]],
+        pattern = "\\[[[:print:]]+$"
+      )
+    ) |>
+    dplyr::mutate(
+      title = fs::path_file(.data[["path"]]) |>
+        stringr::str_remove(stringr::fixed(.data[["metadata"]])) |>
+        stringr::str_trim()
+    ) |>
+    dplyr::mutate(
+      metadata = .data[["metadata"]] |>
+        stringr::str_remove(stringr::fixed(stringr::str_c(
+          ".",
+          sub_format,
+          collapse = ""
+        )))
+    ) |>
     dplyr::mutate(
       sub_lang = .data[["metadata"]] |>
-        stringr::str_extract(pattern = "[[:alpha:]]{2}$"),
+        stringr::str_extract(pattern = "\\][[:punct:]][[:print:]]+$") |>
+        stringr::str_remove(pattern = stringr::fixed("].")),
       yt_id = .data[["metadata"]] |>
         stringr::str_extract(pattern = "(?<=\\[)[[:print:]]{11}"),
       playlist = .data[["path"]] |>
