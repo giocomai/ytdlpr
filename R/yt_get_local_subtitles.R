@@ -2,7 +2,7 @@
 #' frame
 #'
 #' @param sub_format Defaults to "vtt". File extension of the subtitle.
-#' @param sub_lang Defaults to NULL. If not given, all local subtitles are
+#' @param sub_lang Defaults to `NULL`. If not given, all local subtitles are
 #'   returned. If given, only subtitles in the given sub_lang are returned.
 #' @inheritParams yt_get_playlist_folder
 #' @inheritParams yt_extract_id
@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' yt_get_local_subtitles()
+#'   yt_get_local_subtitles()
 #' }
 yt_get_local_subtitles <- function(
   yt_id = NULL,

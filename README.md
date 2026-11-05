@@ -248,7 +248,7 @@ yt_get(
 
 Let’s say we want to export all mentions of a given word, downloading
 the original video files, trimming them, and re-exporting them. This
-would typicall start from a filtered set of subtitles, such as the one
+would typically start from a filtered set of subtitles, such as the one
 created above. We’ll just keep the first two clips here, but of course
 there is no inherent limit.
 
