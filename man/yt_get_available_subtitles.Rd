@@ -7,7 +7,7 @@ file}
 \usage{
 yt_get_available_subtitles(
   info_json_df = NULL,
-  sub_lang = "en",
+  sub_lang = NULL,
   automatic_captions = TRUE,
   subtitles = TRUE,
   yt_id = NULL,
@@ -15,16 +15,17 @@ yt_get_available_subtitles(
 )
 }
 \arguments{
-\item{info_json_df}{Defaults to NULL. Generally created with
+\item{info_json_df}{Defaults to \code{NULL}. Generally created with
 \code{yt_read_info_json()}. If not given, either \code{yt_id} or \code{playlist} must be
 given. If given, both \code{yt_id} and \code{playlist} are ignored.}
 
-\item{sub_lang}{Defaults to "en", subtitles language.}
+\item{sub_lang}{Defaults to \code{NULL}. If given, returns only subtitles only
+when available in given language (e.g. "en")}
 
-\item{automatic_captions}{Defaults to TRUE. If TRUE, checks if subtitles are
-available as "automatic captions".}
+\item{automatic_captions}{Defaults to \code{TRUE}. If \code{TRUE}, checks if subtitles
+are available as "automatic captions".}
 
-\item{subtitles}{Defaults to TRUE. If TRUE, checks if subtitles are available
+\item{subtitles}{Defaults to TRUE. If \code{TRUE}, checks if subtitles are available
 as (manually added or approved) "subtitles".}
 
 \item{yt_id}{YouTube video identifier. Ignored if \code{info_json_df} given.}
